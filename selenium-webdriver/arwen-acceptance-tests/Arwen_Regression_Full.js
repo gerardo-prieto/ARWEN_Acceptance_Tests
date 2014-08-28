@@ -1,6 +1,3 @@
-
-
-
 var assert = require('assert'),
     fs = require('fs');
 
@@ -18,9 +15,13 @@ var server = new SeleniumServer("../libs/selenium-server-standalone.jar", {
 });
     server.start ();
 
+// Testing
+var baseURL = 'http://html5.m-testing.olx.com';
 
-var baseURL = 'http://html5.m-testing.olx.com/force/html4';
-//var baseURL = 'http://m.olx.com.py/force/html4';
+// Staging
+//var baseURL = 'http://html5.m-staging.olx.com';
+
+//var baseURL = 'http://m.olx.com.py';
 
 
 var driver;
@@ -28,6 +29,7 @@ var driver;
 var capabilities = {
     'browserName' : 'phantomjs' ,
     'logLevel': 'silent',
+    'phantomjs.page.settings.userAgent' : 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16'
     }
 
 // HOMEPAGE
@@ -43,7 +45,7 @@ function HomePage(){
         driver.manage().deleteAllCookies();
         driver.get(baseURL + '/?location=www.olx.com.py');
         driver.manage().addCookie('forcedPlatform', 'html4');
-        driver.navigate().refresh();
+        driver.navigate().refresh(); 
         driver.manage().window().setSize(2280, 2024);
     };
   
@@ -97,12 +99,20 @@ function HomePage(){
     driver.findElement(this.search_button).click();
   };
 }
+
 //LISTING
 
 function ListingPage(){
-  this.item_listing = webdriver.By.css("[data-qa=list-item]:first-child")
-  this.openItem = function (){
-    driver.findElement(this.item_listing).click();
+  this.item_listing = "li:nth-child(1) > [data-qa=list-item]";
+  this.openItem = function (number){
+    if(!number){
+      driver.findElement(webdriver.By.css(this.item_listing)).click();
+    }
+      else {
+        var locator = this.item_listing;
+        var new_locator = locator.replace("1", number);
+        driver.findElement(webdriver.By.css(new_locator)).click();  
+    }
   };
 }
 
@@ -199,16 +209,27 @@ function ItemPage(){
   this.favorite_off = webdriver.By.css("[class*='favoriteOff']");
 
   this.addItemToFavorites = function(){
-    if (driver.isElementPresent(this.favorite_on)){
+ /*   if (driver.isElementPresent(this.favorite_on)){
         driver.findElement(this.favorite_on).click
     }
+ */
+    var favorite_on = this.favorite_off;
+    var favorite_off = this.favorite_off;
     driver.findElement(this.favorite_off).click
     driver.wait(function() {
-      return driver.findElement(this.favorite_on).then(function(res) {
-        return driver.isElementPresent(this.favorite_on);
+      return driver.findElement(favorite_on).then(function(res) {
+        return driver.isElementPresent(favorite_on);
+      });
+    }, 8000);
+    driver.findElement(favorite_on).click
+    driver.wait(function() {
+      return driver.findElement(favorite_off).then(function(res) {
+        return driver.isElementPresent(favorite_off);
       });
     }, 8000);
   };
+
+
 
   this.isItemDisplayed = function(){
       var item_page_element = webdriver.By.css("[data-qa=item]");
@@ -225,12 +246,13 @@ function ReplyAdPage(){
   this.name_field = webdriver.By.name("name");
   this.email_field = webdriver.By.name("email");
   this.phone_field = webdriver.By.name("phone");
-  this.reply_button = webdriver.By.xpath("//a[contains(@href,'/reply')]");
+  this.reply_button = webdriver.By.css("[href*='/reply']");
   this.send_button = webdriver.By.name("submit");
   this.confirmation_id = webdriver.By.css("[class=items_success_view]");
 
   this.replyAnAdWith = function(message, name, email, phone){
-    driver.findElement(this.reply_button).click();
+    var reply_button = this.reply_button;
+    driver.findElement(reply_button).click();
     driver.findElement(this.message_field).sendKeys(message);
     driver.findElement(this.name_field).clear();
     driver.findElement(this.name_field).sendKeys(name);
@@ -382,7 +404,6 @@ test.it('ITEM PAGE - Reply an Ad', function() {
     replyAdPage.isConfirmationMessageDisplayed();
   });
 
-/*
 
 test.it('ITEM PAGE - Add Remove to Favorites', function() {
     var loginPage = new LoginPage();
@@ -397,7 +418,7 @@ test.it('ITEM PAGE - Add Remove to Favorites', function() {
     listingPage.openItem(1);
     itemPage.addItemToFavorites();
   });
-*/
+
   test.after(function() { driver.quit(); });
 });
 
