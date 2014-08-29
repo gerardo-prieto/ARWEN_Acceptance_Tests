@@ -18,6 +18,8 @@ var server = new SeleniumServer("../libs/selenium-server-standalone.jar", {
 // Testing
 var baseURL = 'http://html5.m-testing.olx.com';
 
+var timeout = 40000;
+
 // Staging
 //var baseURL = 'http://html5.m-staging.olx.com';
 
@@ -69,7 +71,7 @@ function HomePage(){
       return driver.findElement(login_button).then(function(res) {
         return driver.findElement(login_button);
       });
-    }, 8000);
+    }, timeout);
    };
 
   this.isUserLoggedIn = function(username, password) {
@@ -78,7 +80,7 @@ function HomePage(){
       return driver.findElement(myolx).then(function(res) {
         return driver.findElement(myolx);
       });
-    }, 8000);
+    }, timeout);
    };
 
   this.goToChangeCity = function(){
@@ -90,7 +92,7 @@ function HomePage(){
       return driver.getPageSource().then(function(res) {
         return expect(res).to.contain("location?location=");
         });
-    }, 8000);
+    }, timeout);
   };
 
   this.globalSearch = function(term){
@@ -187,7 +189,7 @@ function AfterPostingPage(){
       return driver.getPageSource().then(function(res) {
         return expect(res).to.contain(title);
       });
-    }, 8000);
+    }, timeout);
   };
 }
 
@@ -220,13 +222,13 @@ function ItemPage(){
       return driver.findElement(favorite_on).then(function(res) {
         return driver.isElementPresent(favorite_on);
       });
-    }, 8000);
+    }, timeout);
     driver.findElement(favorite_on).click
     driver.wait(function() {
       return driver.findElement(favorite_off).then(function(res) {
         return driver.isElementPresent(favorite_off);
       });
-    }, 8000);
+    }, timeout);
   };
 
 
@@ -237,7 +239,7 @@ function ItemPage(){
       return driver.findElement(item_page_element).then(function(res) {
         return driver.findElement(item_page_element);
       });
-    }, 8000);
+    }, timeout);
   };
 }
 
@@ -269,7 +271,7 @@ function ReplyAdPage(){
       return driver.getPageSource().then(function(res) {
         return driver.findElement(confirmation_id);
       });
-    }, 8000);
+    }, timeout);
   };
 
 }
