@@ -25,6 +25,9 @@ var timeout = 40000;
 
 //var baseURL = 'http://m.olx.com.py';
 
+var argv = require('optimist').demand('env').argv;
+var baseURL = argv.env;
+
 
 var driver;
 

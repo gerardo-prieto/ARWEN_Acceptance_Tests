@@ -1,0 +1,7 @@
+{
+  "env": {
+    "testing": "http://html5.m-testing.olx.com",
+    "staging": "http://html5.m-staging.olx.com",
+    "live": "m.olx.com.py"
+  }
+}
