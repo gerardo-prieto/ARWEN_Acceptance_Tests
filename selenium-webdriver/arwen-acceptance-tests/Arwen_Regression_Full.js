@@ -16,7 +16,7 @@ var server = new SeleniumServer("../libs/selenium-server-standalone.jar", {
     server.start ();
 
 // Testing
-var baseURL = 'http://html5.m-testing.olx.com';
+//var baseURL = 'http://html5.m-testing.olx.com';
 
 var timeout = 40000;
 
