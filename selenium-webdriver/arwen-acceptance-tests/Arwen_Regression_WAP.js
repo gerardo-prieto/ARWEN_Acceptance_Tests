@@ -32,24 +32,21 @@ var baseURL = argv.env;
 var driver;
 
 var capabilities = {
-    'browserName' : 'phantomjs' ,
+    'browserName' : 'firefox' ,
     'logLevel': 'silent',
-    'phantomjs.page.settings.userAgent' : 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16'
+    'phantomjs.page.settings.userAgent' : 'SAMSUNG-SGH-N188/1.0 UP/4.1.19k'
     }
 
 // HOMEPAGE
 function HomePage(){
-  this.post_button = webdriver.By.css("[class=post]");
-  this.login_button = webdriver.By.css("[href*='/login']");
-  this.myolx = webdriver.By.css("[href*='/myolx']");
-  this.logout_button = webdriver.By.css("[href*='/logout']");
-  this.ChangeCity_link = webdriver.By.css("div[id=locationSelect] > a");
+  this.post_button = webdriver.By.css("css=[href*='target=posting']");
+  this.ChangeCity_link = webdriver.By.css("css=[href*='/location']");
   this.search_field = webdriver.By.css("[data-qa=search-input]");
   this.search_button = webdriver.By.css("[data-qa=search-submit]");
   this.goToHomePage = function() {
         driver.manage().deleteAllCookies();
         driver.get(baseURL + '/?location=www.olx.com.py');
-        driver.manage().addCookie('forcedPlatform', 'html4');
+        driver.manage().addCookie('forcedPlatform', 'wap');
         driver.navigate().refresh(); 
         driver.manage().window().setSize(2280, 2024);
     };
@@ -59,32 +56,6 @@ function HomePage(){
         driver.findElement(this.post_button).click();
     };
 
-  this.goToLoginPage = function() {
-        driver.findElement(this.login_button).click();
-    };
-
-  this.logOut = function(){
-    driver.findElement(this.myolx).click();
-    driver.findElement(this.logout_button).click();
-    };
-
-  this.isUserLoggedOut = function(){
-      var login_button = this.login_button
-      driver.wait(function() {
-      return driver.findElement(login_button).then(function(res) {
-        return driver.findElement(login_button);
-      });
-    }, timeout);
-   };
-
-  this.isUserLoggedIn = function(username, password) {
-      var myolx = this.myolx
-      driver.wait(function() {
-      return driver.findElement(myolx).then(function(res) {
-        return driver.findElement(myolx);
-      });
-    }, timeout);
-   };
 
   this.goToChangeCity = function(){
      driver.findElement(this.ChangeCity_link).click();     
@@ -122,28 +93,12 @@ function ListingPage(){
 }
 
 
-//LOGIN
-
-function LoginPage(){
-  this.username_field = webdriver.By.css("[name=usernameOrEmail]");
-  this.password_field = webdriver.By.css("[name=password]");
-  this.submit_button = webdriver.By.css("[name=submit]");
-  this.logInWith = function(username, password) {
-    driver.findElement(this.username_field).clear();
-    driver.findElement(this.username_field).sendKeys(username);
-    driver.findElement(this.password_field).clear();
-    driver.findElement(this.password_field).sendKeys(password);
-    driver.findElement(this.submit_button).click();
-  }; 
-}
-
-
 
 
 //POSTING
 
 function PostingPage(){
-  this.city = webdriver.By.css("[class=city]:first-child");
+  this.city = webdriver.By.css("tr:nth-child(1) > * > [href*='posting?location=']");
   this.category = webdriver.By.css("[class=normalList] > li:first-child > a");
   this.subcategory = webdriver.By.css("[class=normalList] > li:first-child > a");  
   this.title = webdriver.By.css("[id=text-title]");
@@ -426,10 +381,4 @@ test.it('ITEM PAGE - Add Remove to Favorites', function() {
 
   test.after(function() { driver.quit(); });
 });
-
-
-/*
-var url =
-var number = url.match(/(\d+){4,20}/);
-*/
 
