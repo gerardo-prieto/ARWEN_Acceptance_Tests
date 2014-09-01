@@ -255,7 +255,7 @@ test.describe('ARWEN Test Suite', function() {
   test.it('POST - Anonymous - No price', function() {
     homePage.goToHomePage();
     homePage.goToPostingPage();
-    postingPage.selectCityCategoryAndSubcategory();
+    postingPage.selectCityCategoryAndSubcategory(186,279);
     postingPage.postWith("Title for testing", "Description for testing", "" ,"Mark tester", "1231231231", "robot_test@olx.com");
     afterPostingPage.openAdLink();
     afterPostingPage.isItemDisplayed("Title for testing");
