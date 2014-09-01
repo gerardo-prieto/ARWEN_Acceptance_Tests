@@ -213,8 +213,8 @@ test.describe('ARWEN Test Suite', function() {
 
 
   test.it('POST - Anonymous - No price', function() {
-    pages.home.goToHomePage();
-    pages.home.goToPostingPage();
+    pages.Home.go();
+    pages.Home.goToPostingPage();
     postingPage.selectCityCategoryAndSubcategory(186,279);
     postingPage.postWith("Title for testing", "Description for testing", "" ,"Mark tester", "1231231231", "robot_test@olx.com");
     afterPostingPage.openAdLink();
@@ -223,8 +223,8 @@ test.describe('ARWEN Test Suite', function() {
 
 
   test.it('POST - Anonymous - With price', function() {
-    pages.home.goToHomePage();
-    pages.home.goToPostingPage();
+    pages.Home.go();
+    pages.Home.goToPostingPage();
     postingPage.selectCityCategoryAndSubcategory(362,378);
     postingPage.postWith("Title for testing","Description for testing", "231231" ,"Mark tester", "1231231231", "robot_test@olx.com");
     afterPostingPage.openAdLink();
@@ -233,30 +233,30 @@ test.describe('ARWEN Test Suite', function() {
 
 
   test.it('LOCATION - Select city', function() {
-    pages.home.goToHomePage();
-    pages.home.goToChangeCity();
+    pages.Home.go();
+    pages.Home.goToChangeCity();
     locationPage.selectCity(1);
-    pages.home.isUserLocatedInCity();
+    pages.Home.isUserLocatedInCity();
   });
 
 
 
 
   test.it('LOCATION - Change city', function() {
-    pages.home.goToHomePage();
-    pages.home.goToChangeCity();
+    pages.Home.go();
+    pages.Home.goToChangeCity();
     locationPage.selectCity(1);
-    pages.home.isUserLocatedInCity();
-    pages.home.goToChangeCity();
+    pages.Home.isUserLocatedInCity();
+    pages.Home.goToChangeCity();
     locationPage.selectCity(2);
-    pages.home.isUserLocatedInCity();
+    pages.Home.isUserLocatedInCity();
 
   });
 
 
   test.it('SEARCH - Global search ', function() {
-    pages.home.goToHomePage();
-    pages.home.globalSearch("a");
+    pages.Home.go();
+    pages.Home.globalSearch("a");
     listingPage.openItem();
     itemPage.isItemDisplayed();
   });
@@ -265,8 +265,8 @@ test.describe('ARWEN Test Suite', function() {
 
 
   test.it('ITEM PAGE - Reply an Ad', function() {
-    pages.home.goToHomePage();
-    pages.home.globalSearch("a");
+    pages.Home.go();
+    pages.Home.globalSearch("a");
     listingPage.openItem();
     replyAdPage.replyAnAdWith('Reply message for testing', 'robot', 'robot_test@olx.com', '1231231231');
     replyAdPage.isConfirmationMessageDisplayed();
