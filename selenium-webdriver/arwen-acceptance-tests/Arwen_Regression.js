@@ -1,3 +1,4 @@
+/*
 var assert = require('assert'),
     fs = require('fs');
 
@@ -60,3 +61,4 @@ test.it('SEARCH - Search and open an Ad', function() {
 });
 
 
+*/
