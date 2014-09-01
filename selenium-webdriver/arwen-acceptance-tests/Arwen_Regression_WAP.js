@@ -32,15 +32,15 @@ var baseURL = argv.env;
 var driver;
 
 var capabilities = {
-    'browserName' : 'firefox' ,
+    'browserName' : 'phantomjs' ,
     'logLevel': 'silent',
-    'phantomjs.page.settings.userAgent' : 'SAMSUNG-SGH-N188/1.0 UP/4.1.19k'
+    'phantomjs.page.settings.userAgent' : 'Mozilla/2.0 (compatible; Go.Web/6.2; HandHTTP 1.1; Elaine/1.0; RIM957 )'
     }
 
 // HOMEPAGE
 function HomePage(){
-  this.post_button = webdriver.By.css("css=[href*='target=posting']");
-  this.ChangeCity_link = webdriver.By.css("css=[href*='/location']");
+  this.post_button = webdriver.By.css("[href*='target=posting']");
+  this.ChangeCity_link = webdriver.By.css("[href*='/location']:not([href*='posting']");
   this.search_field = webdriver.By.css("[data-qa=search-input]");
   this.search_button = webdriver.By.css("[data-qa=search-submit]");
   this.goToHomePage = function() {
@@ -79,14 +79,14 @@ function HomePage(){
 //LISTING
 
 function ListingPage(){
-  this.item_listing = "li:nth-child(1) > [data-qa=list-item]";
+  this.item_listing = "tr:nth-child(2) > td > [data-qa=list-item]";
   this.openItem = function (number){
     if(!number){
       driver.findElement(webdriver.By.css(this.item_listing)).click();
     }
       else {
         var locator = this.item_listing;
-        var new_locator = locator.replace("1", number);
+        var new_locator = locator.replace("2", number);
         driver.findElement(webdriver.By.css(new_locator)).click();  
     }
   };
@@ -99,14 +99,14 @@ function ListingPage(){
 
 function PostingPage(){
   this.city = webdriver.By.css("tr:nth-child(1) > * > [href*='posting?location=']");
-  this.category = webdriver.By.css("[class=normalList] > li:first-child > a");
-  this.subcategory = webdriver.By.css("[class=normalList] > li:first-child > a");  
+  this.category = webdriver.By.css("[href*='posting/186']");
+  this.subcategory = webdriver.By.css("[href*='posting/186/279']");  
   this.title = webdriver.By.css("[id=text-title]");
   this.description = webdriver.By.css("[id=text-description]");
   this.contactName = webdriver.By.css("[id=text-contactName]");
   this.phone = webdriver.By.css("[id=text-phone]");
   this.email = webdriver.By.css("[id=text-email]");
-  this.submitButton = webdriver.By.css("[type=submit][class*='btns']");
+  this.submitButton = webdriver.By.css("[type=submit]:not([formaction]");
  
 
 
@@ -136,7 +136,7 @@ function PostingPage(){
 
 //AFTER POSTING
 function AfterPostingPage(){
-    this.adLink = webdriver.By.css("[href*='-iid-']");
+    this.adLink = webdriver.By.css("[href*='iid']");
 
   this.openAdLink = function() {
       driver.findElement(this.adLink).click();
@@ -155,41 +155,23 @@ function AfterPostingPage(){
 
 // LOCATION
 function LocationPage(){
-   this.city_link = webdriver.By.css("[class=normalList] > li:nth-child(1) > a");
-  
+   this.city_text = "tr:nth-child(1) > td > [href*='location=']:not([href*='www.olx.com.py'])";
    this.selectCity = function(number) {
-    this.city_link = webdriver.By.css("[class=normalList] > li:nth-child("+number+") > a");
-    driver.findElement(this.city_link).click();
+    if(!number){
+      driver.findElement(webdriver.By.css(this.city_text)).click();
+    }
+      else {
+        var locator = this.city_text;
+        var new_locator = locator.replace("1", number);
+        driver.findElement(webdriver.By.css(new_locator)).click();  
+    }
   };
 }
 
+
+
 // ITEM PAGE
 function ItemPage(){
-  this.favorite_on = webdriver.By.css("[class*='favoriteOn']");
-  this.favorite_off = webdriver.By.css("[class*='favoriteOff']");
-
-  this.addItemToFavorites = function(){
- /*   if (driver.isElementPresent(this.favorite_on)){
-        driver.findElement(this.favorite_on).click
-    }
- */
-    var favorite_on = this.favorite_off;
-    var favorite_off = this.favorite_off;
-    driver.findElement(this.favorite_off).click
-    driver.wait(function() {
-      return driver.findElement(favorite_on).then(function(res) {
-        return driver.isElementPresent(favorite_on);
-      });
-    }, timeout);
-    driver.findElement(favorite_on).click
-    driver.wait(function() {
-      return driver.findElement(favorite_off).then(function(res) {
-        return driver.isElementPresent(favorite_off);
-      });
-    }, timeout);
-  };
-
-
 
   this.isItemDisplayed = function(){
       var item_page_element = webdriver.By.css("[data-qa=item]");
@@ -207,7 +189,7 @@ function ReplyAdPage(){
   this.email_field = webdriver.By.name("email");
   this.phone_field = webdriver.By.name("phone");
   this.reply_button = webdriver.By.css("[href*='/reply']");
-  this.send_button = webdriver.By.name("submit");
+  this.send_button = webdriver.By.css("[name=submit]");
   this.confirmation_id = webdriver.By.css("[class=items_success_view]");
 
   this.replyAnAdWith = function(message, name, email, phone){
@@ -260,49 +242,7 @@ test.describe('ARWEN Test Suite', function() {
   });
 
 
-  test.it('POST - Logged In', function() {
-    var homePage =  new HomePage();
-    var postingPage = new PostingPage();
-    var afterPostingPage = new AfterPostingPage();
-    var loginPage = new LoginPage();
-
-
-    homePage.goToHomePage();
-    homePage.goToLoginPage();
-    loginPage.logInWith('robot_test@olx.com', 'robotium2014');
-    homePage.goToPostingPage();
-    postingPage.selectCityCategoryAndSubcategory();
-    postingPage.postWith("Title for testing","Description for testing", "Mark tester", "1231231231", "robot_test@olx.com");
-    afterPostingPage.openAdLink();
-    afterPostingPage.isItemDisplayed("Title for testing");
-  });
-
-
-
-  test.it('LOGIN with valid user', function() {
-    var loginPage = new LoginPage();
-    var homePage =  new HomePage();
-
-    homePage.goToHomePage();
-    homePage.goToLoginPage();
-    loginPage.logInWith('robot_test@olx.com', 'robotium2014');
-    homePage.isUserLoggedIn();
-  });
-
-
-test.it('LOGOUT - Logout with valid user', function() {
-    var loginPage = new LoginPage();
-    var homePage =  new HomePage();
-
-    homePage.goToHomePage();
-    homePage.goToLoginPage();
-    loginPage.logInWith('robot_test@olx.com', 'robotium2014');
-    homePage.logOut();
-    homePage.isUserLoggedOut();
-
-  });
-
-
+/*
 test.it('LOCATION - Select city', function() {
     var homePage =  new HomePage();
     var locationPage = new LocationPage();
@@ -331,15 +271,13 @@ test.it('LOCATION - Change city', function() {
   });
 
 
-test.it('SEARCH - Search logged in', function() {
-    var loginPage = new LoginPage();
+
+test.it('SEARCH - Global search ', function() {
     var homePage =  new HomePage();
     var listingPage = new ListingPage();
     var itemPage = new ItemPage();
 
     homePage.goToHomePage();
-    homePage.goToLoginPage();
-    loginPage.logInWith('robot_test@olx.com', 'robotium2014');
     homePage.globalSearch("a");
     listingPage.openItem();
     itemPage.isItemDisplayed();
@@ -349,35 +287,18 @@ test.it('SEARCH - Search logged in', function() {
 
 
 test.it('ITEM PAGE - Reply an Ad', function() {
-    var loginPage = new LoginPage();
     var homePage =  new HomePage();
     var listingPage = new ListingPage();
     var itemPage = new ItemPage();
     var replyAdPage = new ReplyAdPage();
 
     homePage.goToHomePage();
-    homePage.goToLoginPage();
-    loginPage.logInWith('robot_test@olx.com', 'robotium2014');
     homePage.globalSearch("a");
-    listingPage.openItem(1);
+    listingPage.openItem();
     replyAdPage.replyAnAdWith('Reply message for testing', 'robot', 'robot_test@olx.com', '1231231231');
     replyAdPage.isConfirmationMessageDisplayed();
   });
-
-
-test.it('ITEM PAGE - Add Remove to Favorites', function() {
-    var loginPage = new LoginPage();
-    var homePage =  new HomePage();
-    var listingPage = new ListingPage();
-    var itemPage = new ItemPage();
-
-    homePage.goToHomePage();
-    homePage.goToLoginPage();
-    loginPage.logInWith('robot_test@olx.com', 'robotium2014');
-    homePage.globalSearch("a");
-    listingPage.openItem(1);
-    itemPage.addItemToFavorites();
-  });
+*/
 
   test.after(function() { driver.quit(); });
 });
