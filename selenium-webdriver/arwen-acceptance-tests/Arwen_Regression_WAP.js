@@ -8,6 +8,7 @@ var webdriver = require('../node_modules/selenium-webdriver'),
     test = require('../node_modules/selenium-webdriver/testing'),
     remote = require('../node_modules/selenium-webdriver/remote'),
     SeleniumServer = require('../node_modules/selenium-webdriver/remote').SeleniumServer;
+var config = require('../config');
 
 
 var server = new SeleniumServer("../libs/selenium-server-standalone.jar", {
@@ -18,8 +19,6 @@ var server = new SeleniumServer("../libs/selenium-server-standalone.jar", {
 // Testing
 //var baseURL = 'http://html5.m-testing.olx.com';
 
-var timeout = 60000;
-
 // Staging
 //var baseURL = 'http://html5.m-staging.olx.com';
 
@@ -27,54 +26,9 @@ var timeout = 60000;
 
 var argv = require('optimist').demand('env').argv;
 var baseURL = argv.env;
-
+var platform = argv.platform;
 
 var driver;
-
-var capabilities = {
-    'browserName' : 'phantomjs' ,
-    'logLevel': 'silent',
-    'phantomjs.page.customHeaders.User-Agent' : 'WAP'
-    }
-
-// HOMEPAGE
-function HomePage(){
-  this.post_button = webdriver.By.css("[href*='posting']");
-  this.ChangeCity_link = webdriver.By.css("[href*='/location']:not([href*='posting'])");
-  this.search_field = webdriver.By.css("[data-qa=search-input]");
-  this.search_button = webdriver.By.css("[data-qa=search-submit]");
-  this.goToHomePage = function() {
-        driver.manage().deleteAllCookies();
-        driver.get(baseURL + '/?location=www.olx.com.py');
-        driver.manage().addCookie('forcedPlatform', 'wap');
-        driver.navigate().refresh(); 
-        driver.manage().window().setSize(2280, 2024);
-    };
-  
-
-  this.goToPostingPage = function() {
-        driver.findElement(this.post_button).click();
-    };
-
-
-  this.goToChangeCity = function(){
-     driver.findElement(this.ChangeCity_link).click();     
-  };
-
-  this.isUserLocatedInCity = function() {
-    driver.wait(function() {
-      return driver.getPageSource().then(function(res) {
-        return expect(res).to.contain("location?location=");
-        });
-    }, timeout);
-  };
-
-  this.globalSearch = function(term){
-    driver.findElement(this.search_field).clear();
-    driver.findElement(this.search_field).sendKeys(term);
-    driver.findElement(this.search_button).click();
-  };
-}
 
 //LISTING
 
@@ -162,7 +116,7 @@ function AfterPostingPage(){
       return driver.getPageSource().then(function(res) {
         return expect(res).to.contain(title);
       });
-    }, timeout);
+    }, config.timeout);
   };
 }
 
@@ -194,7 +148,7 @@ function ItemPage(){
       return driver.findElement(item_page_element).then(function(res) {
         return driver.findElement(item_page_element);
       });
-    }, timeout);
+    }, config.timeout);
   };
 }
 
@@ -222,39 +176,45 @@ function ReplyAdPage(){
 
   this.isConfirmationMessageDisplayed = function(){
     var confirmation_id = this.confirmation_id;
-    driver.wait(function() {
-      return driver.getPageSource().then(function(res) {
+    driver.wait(function callback() {
+      return driver.getPageSource().then(function callback(res) {
         return driver.findElement(confirmation_id);
       });
-    }, timeout);
+    }, config.timeout);
   };
 
 }
-  
-
 
 test.describe('ARWEN Test Suite', function() {
-    var homePage =  new HomePage();
-    var postingPage = new PostingPage();
-    var afterPostingPage = new AfterPostingPage();
-    var locationPage = new LocationPage();
-    var listingPage = new ListingPage();
-    var itemPage = new ItemPage();
-    var replyAdPage = new ReplyAdPage();
+    var pages;
+    var postingPage;
+    var afterPostingPage;
+    var locationPage;
+    var listingPage;
+    var itemPage;
+    var replyAdPage;
 
   test.before(function() {
     driver = new webdriver.Builder().
     usingServer(server.address()).
-    withCapabilities(capabilities). 
+    withCapabilities(config.capabilities[platform]). 
     build();
-    driver.manage().timeouts().implicitlyWait(timeout, 1000);
+    driver.manage().timeouts().implicitlyWait(config.timeout, 1000);
 
+    pages = require('../pages')(driver, baseURL);
+
+    postingPage = new PostingPage();
+    afterPostingPage = new AfterPostingPage();
+    locationPage = new LocationPage();
+    listingPage = new ListingPage();
+    itemPage = new ItemPage();
+    replyAdPage = new ReplyAdPage();
   });
 
 
   test.it('POST - Anonymous - No price', function() {
-    homePage.goToHomePage();
-    homePage.goToPostingPage();
+    pages.home.goToHomePage();
+    pages.home.goToPostingPage();
     postingPage.selectCityCategoryAndSubcategory(186,279);
     postingPage.postWith("Title for testing", "Description for testing", "" ,"Mark tester", "1231231231", "robot_test@olx.com");
     afterPostingPage.openAdLink();
@@ -263,8 +223,8 @@ test.describe('ARWEN Test Suite', function() {
 
 
   test.it('POST - Anonymous - With price', function() {
-    homePage.goToHomePage();
-    homePage.goToPostingPage();
+    pages.home.goToHomePage();
+    pages.home.goToPostingPage();
     postingPage.selectCityCategoryAndSubcategory(362,378);
     postingPage.postWith("Title for testing","Description for testing", "231231" ,"Mark tester", "1231231231", "robot_test@olx.com");
     afterPostingPage.openAdLink();
@@ -273,30 +233,30 @@ test.describe('ARWEN Test Suite', function() {
 
 
   test.it('LOCATION - Select city', function() {
-    homePage.goToHomePage();
-    homePage.goToChangeCity();
+    pages.home.goToHomePage();
+    pages.home.goToChangeCity();
     locationPage.selectCity(1);
-    homePage.isUserLocatedInCity();
+    pages.home.isUserLocatedInCity();
   });
 
 
 
 
   test.it('LOCATION - Change city', function() {
-    homePage.goToHomePage();
-    homePage.goToChangeCity();
+    pages.home.goToHomePage();
+    pages.home.goToChangeCity();
     locationPage.selectCity(1);
-    homePage.isUserLocatedInCity();
-    homePage.goToChangeCity();
+    pages.home.isUserLocatedInCity();
+    pages.home.goToChangeCity();
     locationPage.selectCity(2);
-    homePage.isUserLocatedInCity();
+    pages.home.isUserLocatedInCity();
 
   });
 
 
   test.it('SEARCH - Global search ', function() {
-    homePage.goToHomePage();
-    homePage.globalSearch("a");
+    pages.home.goToHomePage();
+    pages.home.globalSearch("a");
     listingPage.openItem();
     itemPage.isItemDisplayed();
   });
@@ -305,8 +265,8 @@ test.describe('ARWEN Test Suite', function() {
 
 
   test.it('ITEM PAGE - Reply an Ad', function() {
-    homePage.goToHomePage();
-    homePage.globalSearch("a");
+    pages.home.goToHomePage();
+    pages.home.globalSearch("a");
     listingPage.openItem();
     replyAdPage.replyAnAdWith('Reply message for testing', 'robot', 'robot_test@olx.com', '1231231231');
     replyAdPage.isConfirmationMessageDisplayed();
