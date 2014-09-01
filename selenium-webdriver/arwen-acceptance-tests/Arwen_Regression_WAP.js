@@ -44,8 +44,8 @@ function HomePage(){
   this.search_field = webdriver.By.css("[data-qa=search-input]");
   this.search_button = webdriver.By.css("[data-qa=search-submit]");
   this.goToHomePage = function() {
-        driver.get(baseURL + '/?location=www.olx.com.py');
         driver.manage().deleteAllCookies();
+        driver.get(baseURL + '/?location=www.olx.com.py');
         driver.manage().addCookie('forcedPlatform', 'wap');
         driver.navigate().refresh(); 
         driver.manage().window().setSize(2280, 2024);
