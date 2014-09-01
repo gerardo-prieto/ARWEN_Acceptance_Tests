@@ -38,13 +38,14 @@ var capabilities = {
     'phantomjs.page.customHeaders.User-Agent' : 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16'
     }
 
+
 // HOMEPAGE
 function HomePage(){
   this.post_button = webdriver.By.css("[class=post]");
   this.login_button = webdriver.By.css("[href*='/login']");
   this.myolx = webdriver.By.css("[href*='/myolx']");
   this.logout_button = webdriver.By.css("[href*='/logout']");
-  this.ChangeCity_link = webdriver.By.css("div[id=locationSelect] > a");
+  this.change_city_link = webdriver.By.css("div[id=locationSelect] > a");
   this.search_field = webdriver.By.css("[data-qa=search-input]");
   this.search_button = webdriver.By.css("[data-qa=search-submit]");
   this.goToHomePage = function() {
@@ -88,7 +89,7 @@ function HomePage(){
    };
 
   this.goToChangeCity = function(){
-     driver.findElement(this.ChangeCity_link).click();     
+     driver.findElement(this.change_city_link).click();     
   };
 
   this.isUserLocatedInCity = function() {
@@ -106,8 +107,8 @@ function HomePage(){
   };
 }
 
-//LISTING
 
+//LISTING
 function ListingPage(){
   this.item_listing = "li:nth-child(1) > [data-qa=list-item]";
   this.openItem = function (number){
@@ -124,7 +125,6 @@ function ListingPage(){
 
 
 //LOGIN
-
 function LoginPage(){
   this.username_field = webdriver.By.css("[name=usernameOrEmail]");
   this.password_field = webdriver.By.css("[name=password]");
@@ -139,16 +139,14 @@ function LoginPage(){
 }
 
 
-
-
 //POSTING
-
 function PostingPage(){
   this.city = webdriver.By.css("[class=city]:first-child");
-  this.category = webdriver.By.css("[class=normalList] > li:first-child > a");
-  this.subcategory = webdriver.By.css("[class=normalList] > li:first-child > a");  
+  this.category = "[href*='posting/186']";
+  this.subcategory = "[href*='posting/186/279']";   
   this.title = webdriver.By.css("[id=text-title]");
   this.description = webdriver.By.css("[id=text-description]");
+  this.price = webdriver.By.css("[id=text-priceC]");
   this.contactName = webdriver.By.css("[id=text-contactName]");
   this.phone = webdriver.By.css("[id=text-phone]");
   this.email = webdriver.By.css("[id=text-email]");
@@ -156,18 +154,33 @@ function PostingPage(){
  
 
 
-  this.selectCityCategoryAndSubcategory = function() {
-      driver.findElement(this.city).click();
-      driver.findElement(this.category).click();
-      driver.findElement(this.subcategory).click();
+  this.selectCityCategoryAndSubcategory = function(category , subcategory) {
+    driver.findElement(this.city).click();
+    if(!category || !subcategory){
+      driver.findElement(webdriver.By.css(this.category)).click();
+      driver.findElement(webdriver.By.css(this.subcategory)).click();
+    }
+      else {
+        var category_locator = this.category;
+        var subcategory_locator = this.subcategory
+        var new_category = category_locator.replace("186", category);
+        var new_subcategory = subcategory_locator.replace("186/279", category + "/" + subcategory);
+        driver.findElement(webdriver.By.css(new_category)).click();  
+        driver.findElement(webdriver.By.css(new_subcategory)).click();
+      }
     };
 
 
-  this.postWith = function(title, description, contact_name, phone, email) {
+
+  this.postWith = function(title, description, price , contact_name , phone , email) {
     driver.findElement(this.title).clear();
     driver.findElement(this.title).sendKeys(title);
     driver.findElement(this.description).clear();
     driver.findElement(this.description).sendKeys(description);
+    if (price){
+      driver.findElement(this.price).clear();
+      driver.findElement(this.price).sendKeys(price);
+    }
     driver.findElement(this.contactName).clear();
     driver.findElement(this.contactName).sendKeys(contact_name);
     driver.findElement(this.phone).clear();
@@ -176,7 +189,6 @@ function PostingPage(){
     driver.findElement(this.email).sendKeys(email);
     driver.findElement(this.submitButton).click();
     };
-
 }
 
 
@@ -198,16 +210,21 @@ function AfterPostingPage(){
 }
 
 
-
 // LOCATION
 function LocationPage(){
-   this.city_link = webdriver.By.css("[class=normalList] > li:nth-child(1) > a");
-  
+   this.city_link = "[class=normalList] > li:nth-child(1) > a";
    this.selectCity = function(number) {
-    this.city_link = webdriver.By.css("[class=normalList] > li:nth-child("+number+") > a");
-    driver.findElement(this.city_link).click();
+   if(!number){
+      driver.findElement(webdriver.By.css(this.city_link)).click();
+    }
+     else {
+      var city_link = this.city_link;
+      var new_city_link = city_link.replace("1", number);
+      driver.findElement(webdriver.By.css(new_city_link)).click();  
+    }
   };
 }
+
 
 // ITEM PAGE
 function ItemPage(){
@@ -247,6 +264,7 @@ function ItemPage(){
   };
 }
 
+
 function ReplyAdPage(){
   this.message_field = webdriver.By.name("message");
   this.name_field = webdriver.By.name("name");
@@ -277,12 +295,20 @@ function ReplyAdPage(){
       });
     }, timeout);
   };
-
 }
   
 
 
 test.describe('ARWEN Test Suite', function() {
+  var homePage =  new HomePage();
+  var postingPage = new PostingPage();
+  var afterPostingPage = new AfterPostingPage();
+  var loginPage = new LoginPage();
+  var locationPage = new LocationPage();
+  var listingPage = new ListingPage();
+  var itemPage = new ItemPage();
+  var replyAdPage = new ReplyAdPage();
+
 
   test.before(function() {
     driver = new webdriver.Builder().
@@ -293,42 +319,52 @@ test.describe('ARWEN Test Suite', function() {
   });
 
 
-  test.it('POST - Anonymous', function() {
-    var homePage =  new HomePage();
-    var postingPage = new PostingPage();
-    var afterPostingPage = new AfterPostingPage();
+
+  test.it('POST - Anonymous - No price', function() {
     homePage.goToHomePage();
     homePage.goToPostingPage();
     postingPage.selectCityCategoryAndSubcategory();
-    postingPage.postWith("Title for testing","Description for testing", "Mark tester", "1231231231", "robot_test@olx.com");
+    postingPage.postWith("Title for testing","Description for testing", "" , "Mark tester", "1231231231", "robot_test@olx.com");
     afterPostingPage.openAdLink();
     afterPostingPage.isItemDisplayed("Title for testing");
   });
 
 
-  test.it('POST - Logged In', function() {
-    var homePage =  new HomePage();
-    var postingPage = new PostingPage();
-    var afterPostingPage = new AfterPostingPage();
-    var loginPage = new LoginPage();
+  test.it('POST - Anonymous - With price', function() {
+    homePage.goToHomePage();
+    homePage.goToPostingPage();
+    postingPage.selectCityCategoryAndSubcategory(362,378);
+    postingPage.postWith("Title for testing","Description for testing", "2000" , "Mark tester", "1231231231", "robot_test@olx.com");
+    afterPostingPage.openAdLink();
+    afterPostingPage.isItemDisplayed("Title for testing");
+  });
 
 
+  test.it('POST - Logged In - No price', function() {
     homePage.goToHomePage();
     homePage.goToLoginPage();
     loginPage.logInWith('robot_test@olx.com', 'robotium2014');
     homePage.goToPostingPage();
     postingPage.selectCityCategoryAndSubcategory();
-    postingPage.postWith("Title for testing","Description for testing", "Mark tester", "1231231231", "robot_test@olx.com");
+    postingPage.postWith("Title for testing","Description for testing", "" , "Mark tester", "1231231231", "robot_test@olx.com");
     afterPostingPage.openAdLink();
     afterPostingPage.isItemDisplayed("Title for testing");
   });
 
 
+  test.it('POST - Logged In - With price', function() {
+    homePage.goToHomePage();
+    homePage.goToLoginPage();
+    loginPage.logInWith('robot_test@olx.com', 'robotium2014');
+    homePage.goToPostingPage();
+    postingPage.selectCityCategoryAndSubcategory(362,378);
+    postingPage.postWith("Title for testing","Description for testing", "2000" , "Mark tester", "1231231231", "robot_test@olx.com");
+    afterPostingPage.openAdLink();
+    afterPostingPage.isItemDisplayed("Title for testing");
+  });
+
 
   test.it('LOGIN with valid user', function() {
-    var loginPage = new LoginPage();
-    var homePage =  new HomePage();
-
     homePage.goToHomePage();
     homePage.goToLoginPage();
     loginPage.logInWith('robot_test@olx.com', 'robotium2014');
@@ -337,9 +373,6 @@ test.describe('ARWEN Test Suite', function() {
 
 
 test.it('LOGOUT - Logout with valid user', function() {
-    var loginPage = new LoginPage();
-    var homePage =  new HomePage();
-
     homePage.goToHomePage();
     homePage.goToLoginPage();
     loginPage.logInWith('robot_test@olx.com', 'robotium2014');
@@ -350,9 +383,6 @@ test.it('LOGOUT - Logout with valid user', function() {
 
 
 test.it('LOCATION - Select city', function() {
-    var homePage =  new HomePage();
-    var locationPage = new LocationPage();
-
     homePage.goToHomePage();
     homePage.goToChangeCity();
     locationPage.selectCity(1);
@@ -361,11 +391,7 @@ test.it('LOCATION - Select city', function() {
 
 
 
-
 test.it('LOCATION - Change city', function() {
-    var homePage =  new HomePage();
-    var locationPage = new LocationPage();
-
     homePage.goToHomePage();
     homePage.goToChangeCity();
     locationPage.selectCity(1);
@@ -378,11 +404,6 @@ test.it('LOCATION - Change city', function() {
 
 
 test.it('SEARCH - Search logged in', function() {
-    var loginPage = new LoginPage();
-    var homePage =  new HomePage();
-    var listingPage = new ListingPage();
-    var itemPage = new ItemPage();
-
     homePage.goToHomePage();
     homePage.goToLoginPage();
     loginPage.logInWith('robot_test@olx.com', 'robotium2014');
@@ -392,15 +413,25 @@ test.it('SEARCH - Search logged in', function() {
   });
 
 
+test.it('SEARCH - Search anonymous', function() {
+    homePage.goToHomePage();
+    homePage.globalSearch("a");
+    listingPage.openItem();
+    itemPage.isItemDisplayed();
+  });
 
 
-test.it('ITEM PAGE - Reply an Ad', function() {
-    var loginPage = new LoginPage();
-    var homePage =  new HomePage();
-    var listingPage = new ListingPage();
-    var itemPage = new ItemPage();
-    var replyAdPage = new ReplyAdPage();
 
+test.it('ITEM PAGE - Reply an Ad - Anonymous', function() {
+    homePage.goToHomePage();
+    homePage.globalSearch("a");
+    listingPage.openItem(1);
+    replyAdPage.replyAnAdWith('Reply message for testing', 'robot', 'robot_test@olx.com', '1231231231');
+    replyAdPage.isConfirmationMessageDisplayed();
+  });
+
+
+test.it('ITEM PAGE - Reply an Ad - Logged in', function() {
     homePage.goToHomePage();
     homePage.goToLoginPage();
     loginPage.logInWith('robot_test@olx.com', 'robotium2014');
@@ -411,12 +442,7 @@ test.it('ITEM PAGE - Reply an Ad', function() {
   });
 
 
-test.it('ITEM PAGE - Add Remove to Favorites', function() {
-    var loginPage = new LoginPage();
-    var homePage =  new HomePage();
-    var listingPage = new ListingPage();
-    var itemPage = new ItemPage();
-
+test.it('ITEM PAGE - Add and Remove to Favorites', function() {
     homePage.goToHomePage();
     homePage.goToLoginPage();
     loginPage.logInWith('robot_test@olx.com', 'robotium2014');
@@ -427,10 +453,3 @@ test.it('ITEM PAGE - Add Remove to Favorites', function() {
 
   test.after(function() { driver.quit(); });
 });
-
-
-/*
-var url =
-var number = url.match(/(\d+){4,20}/);
-*/
-
