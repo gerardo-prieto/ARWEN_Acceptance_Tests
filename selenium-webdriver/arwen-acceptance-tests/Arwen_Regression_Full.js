@@ -16,13 +16,6 @@ var server = new SeleniumServer("../libs/selenium-server-standalone.jar", {
 });
     server.start ();
 
-// Testing
-//var baseURL = 'http://html5.m-testing.olx.com';
-
-// Staging
-//var baseURL = 'http://html5.m-staging.olx.com';
-
-//var baseURL = 'http://m.olx.com.py';
 
 var argv = require('optimist').demand('env').argv;
 var baseURL = argv.env;
@@ -42,7 +35,6 @@ test.describe('ARWEN Test Suite', function() {
     driver.manage().timeouts().implicitlyWait(config.timeout, 1000);
     pages = require('../pages')(driver, baseURL);
   });
-
 
 
 
@@ -147,7 +139,7 @@ test.it('SEARCH - Search anonymous', function() {
   });
 
 
-/*
+
 test.it('ITEM PAGE - Reply an Ad - Anonymous', function() {
     pages.Home.go();
     pages.Home.globalSearch("a");
@@ -166,7 +158,7 @@ test.it('ITEM PAGE - Reply an Ad - Logged in', function() {
     pages.Reply.replyAnAdWith('Reply message for testing', 'robot', 'robot_test@olx.com', '1231231231');
     pages.Reply.isConfirmationMessageDisplayed();
   });
-*/
+
 
 test.it('ITEM PAGE - Add and Remove to Favorites', function() {
     pages.Home.go();
