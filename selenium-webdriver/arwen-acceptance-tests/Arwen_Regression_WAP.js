@@ -46,6 +46,7 @@ function HomePage(){
   this.goToHomePage = function() {
         driver.manage().deleteAllCookies();
         driver.get(baseURL + '/?location=www.olx.com.py');
+        driver.manage().deleteAllCookies();
         driver.manage().addCookie('forcedPlatform', 'wap');
         driver.navigate().refresh(); 
         driver.manage().window().setSize(2280, 2024);
@@ -266,7 +267,7 @@ test.describe('ARWEN Test Suite', function() {
     homePage.goToHomePage();
     homePage.goToPostingPage();
     postingPage.selectCityCategoryAndSubcategory(362,378);
-    postingPage.postWith("Title for testing","Description for testing", "231231" ,"Mark tester", "1231231231", "robot_test@olx.com");
+    postingPage.postWith("Title for testing","Description for testing", "23123","Mark tester", "1231231231", "robot_test@olx.com");
     afterPostingPage.openAdLink();
     afterPostingPage.isItemDisplayed("Title for testing");
   });
@@ -315,4 +316,3 @@ test.describe('ARWEN Test Suite', function() {
 
   test.after(function() { driver.quit(); });
 });
-
