@@ -58,6 +58,7 @@ test.describe('ARWEN Test Suite', function() {
   });
 
 
+
   test.it('POST - Logged In - No price', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
@@ -81,7 +82,6 @@ test.describe('ARWEN Test Suite', function() {
     pages.AfterPosting.isItemDisplayed("Title for testing");
   });
 
-
   test.it('LOGIN with valid user', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
@@ -102,16 +102,15 @@ test.it('LOGOUT - Logout with valid user', function() {
 
 test.it('LOCATION - Select city', function() {
     pages.Home.go();
-    pages.Home.goToChangeCity();
+    pages.Home.goToSelectCity();
     pages.Location.selectCity(1);
     pages.Home.isUserLocatedInCity();
   });
 
 
-
 test.it('LOCATION - Change city', function() {
     pages.Home.go();
-    pages.Home.goToChangeCity();
+    pages.Home.goToSelectCity();
     pages.Location.selectCity(1);
     pages.Home.isUserLocatedInCity();
     pages.Home.goToChangeCity();
@@ -158,6 +157,7 @@ test.it('ITEM PAGE - Reply an Ad - Logged in', function() {
     pages.Reply.replyAnAdWith('Reply message for testing', 'robot', 'robot_test@olx.com', '1231231231');
     pages.Reply.isConfirmationMessageDisplayed();
   });
+
 
 
 test.it('ITEM PAGE - Add and Remove to Favorites', function() {
