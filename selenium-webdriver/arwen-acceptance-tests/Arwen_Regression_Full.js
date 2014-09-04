@@ -37,7 +37,7 @@ test.describe('ARWEN Test Suite', function() {
   });
 
 
-
+/*
   test.it('POST - Anonymous - No price', function() {
     pages.Home.go();
     pages.Home.goToPostingPage();
@@ -81,6 +81,7 @@ test.describe('ARWEN Test Suite', function() {
     pages.AfterPosting.openAdLink();
     pages.AfterPosting.isItemDisplayed("Title for testing");
   });
+*/
 
   test.it('LOGIN with valid user', function() {
     pages.Home.go();
@@ -99,7 +100,7 @@ test.it('LOGOUT - Logout with valid user', function() {
 
   });
 
-
+/*
 test.it('LOCATION - Select city', function() {
     pages.Home.go();
     pages.Home.goToSelectCity();
@@ -168,6 +169,8 @@ test.it('ITEM PAGE - Add and Remove to Favorites', function() {
     pages.Listing.openItem(1);
     pages.Item.addItemToFavorites();
   });
+
+*/
 
   test.after(function() { driver.quit(); });
 });
