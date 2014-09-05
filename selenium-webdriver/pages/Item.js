@@ -38,4 +38,5 @@ module.exports = function(driver, baseURL) {
           .then(function assert(isPresent) {
             expect(isPresent).to.equal(true);
       });
+  };       
 }
