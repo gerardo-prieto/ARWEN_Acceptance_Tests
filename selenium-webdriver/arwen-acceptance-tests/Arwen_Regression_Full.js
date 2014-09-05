@@ -37,7 +37,7 @@ test.describe('ARWEN Test Suite', function() {
   });
 
 
-/*
+
   test.it('POST - Anonymous - No price', function() {
     pages.Home.go();
     pages.Home.goToPostingPage();
@@ -81,8 +81,8 @@ test.describe('ARWEN Test Suite', function() {
     pages.AfterPosting.openAdLink();
     pages.AfterPosting.isItemDisplayed("Title for testing");
   });
-*/
 
+/*
   test.it('LOGIN with valid user', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
@@ -100,7 +100,7 @@ test.it('LOGOUT - Logout with valid user', function() {
 
   });
 
-/*
+
 test.it('LOCATION - Select city', function() {
     pages.Home.go();
     pages.Home.goToSelectCity();
