@@ -36,7 +36,7 @@ test.describe('ARWEN Test Suite', function() {
     pages = require('../pages')(driver, baseURL);
   });
 
-
+/*
 
   test.it('POST - Anonymous - No price', function() {
     pages.Home.go();
@@ -82,7 +82,7 @@ test.describe('ARWEN Test Suite', function() {
     pages.AfterPosting.isItemDisplayed("Title for testing");
   });
 
-/*
+
   test.it('LOGIN with valid user', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
@@ -119,7 +119,7 @@ test.it('LOCATION - Change city', function() {
     pages.Home.isUserLocatedInCity();
 
   });
-
+*/
 
 test.it('SEARCH - Search logged in', function() {
     pages.Home.go();
@@ -138,7 +138,7 @@ test.it('SEARCH - Search anonymous', function() {
     pages.Item.isItemDisplayed();
   });
 
-
+/*
 
 test.it('ITEM PAGE - Reply an Ad - Anonymous', function() {
     pages.Home.go();

@@ -34,10 +34,8 @@ module.exports = function(driver, baseURL) {
 
   this.isItemDisplayed = function(){
       var item_page_element = webdriver.By.css("[data-qa=item]");
-      driver.wait(function() {
-      return driver.findElement(item_page_element).then(function(res) {
-        return driver.findElement(item_page_element);
+      driver.isElementPresent(item_page_element)
+          .then(function assert(isPresent) {
+            expect(isPresent).to.equal(true);
       });
-    }, config.timeout);
-  };
 }

@@ -39,20 +39,21 @@ module.exports = function(driver, baseURL) {
   this.isUserLoggedOut = function(){
       var myolx = this.myolx;
       var user_logged_out = webdriver.By.css("[href*='/login']");
+      driver.isElementPresent(user_logged_out)
+          .then(function assert(isPresent) {
+            expect(isPresent).to.equal(true);
+      });
+  };
 
-      driver.isElementPresent(webdriver.By.css("[href*='/login']")).then(function(element){
-        return element;
-    });
-   };
 
   this.isUserLoggedIn = function(username, password) {
       var myolx = this.myolx;
       var user_logged_out = webdriver.By.css("[href*='/login']");
-      
-      driver.isElementPresent(webdriver.By.css("[href*='/login']")).then(function(element){
-        return !element;
+      driver.isElementPresent(user_logged_out)
+          .then(function assert(isPresent) {
+            expect(isPresent).to.equal(false);
       });
-   };
+  };
 
   this.goToChangeCity = function(){
      driver.findElement(this.change_city_link).click();     
@@ -64,10 +65,9 @@ module.exports = function(driver, baseURL) {
 
   this.isUserLocatedInCity = function() {
     var change_city = this.change_city_link;
-    driver.wait(function() {
-       return driver.findElement(change_city).then(function(res) {
-        return driver.findElement(change_city);
-        });
+    driver.isElementPresent(change_city)
+      .then(function assert(isPresent) {
+        expect(isPresent).to.equal(true);
     });
   };
 
