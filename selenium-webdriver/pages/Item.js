@@ -6,28 +6,28 @@ var webdriver = require('../node_modules/selenium-webdriver');
 var config = require('../config');
 
 module.exports = function(driver, baseURL) {
-  this.favorite_on = webdriver.By.css("[class*='favoriteOn']");
-  this.favorite_off = webdriver.By.css("[class*='favoriteOff']");
+  this.favorite_on = webdriver.By.css("[class*='favoriteOn']"); // missing
+  this.favorite_off = webdriver.By.css("[class*='favoriteOff']"); // missing
 
   this.addItemToFavorites = function(){
- /*   if (driver.isElementPresent(this.favorite_on)){
-        driver.findElement(this.favorite_on).click
-    }
- */
-    var favorite_on = this.favorite_off;
+    var favorite_on = this.favorite_on;
     var favorite_off = this.favorite_off;
-    driver.findElement(this.favorite_off).click
-    driver.wait(function() {
-      return driver.findElement(favorite_on).then(function(res) {
-        return driver.isElementPresent(favorite_on);
+
+    driver.isElementPresent(favorite_on)
+      .then(function check(isPresent) {
+        if (isPresent){
+          driver.findElement(favorite_on).click();
+        }
+      })
+      .then(function click() {
+        driver.findElement(favorite_off).click();
+      })
+      .then(function check() {
+        driver.isElementPresent(favorite_on)
+          .then(function assert(isPresent) {
+            expect(isPresent).to.equal(true);
+          });
       });
-    }, config.timeout);
-    driver.findElement(favorite_on).click
-    driver.wait(function() {
-      return driver.findElement(favorite_off).then(function(res) {
-        return driver.isElementPresent(favorite_off);
-      });
-    }, config.timeout);
   };
 
 

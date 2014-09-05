@@ -6,11 +6,11 @@ var webdriver = require('../node_modules/selenium-webdriver');
 var config = require('../config');
 
 module.exports = function(driver, baseURL) {
-  this.post_button = webdriver.By.css("[class=post]");
-  this.login_button = webdriver.By.css("[href*='/login']");
-  this.myolx = webdriver.By.css("[href*='/myolx']");
-  this.logout_button = webdriver.By.css("[href*='/logout']");
-  this.change_city_link = webdriver.By.css("div[id=locationSelect] > a");
+  this.post_button = webdriver.By.css("[data-qa=post_button]");
+  this.myolx = webdriver.By.css("[data-qa=my_olx]"); // -> Missing
+  this.logout_button = webdriver.By.css("[data-qa=logout_link]");
+  this.select_city_link = webdriver.By.css("[data-qa=select_city]");
+  this.change_city_link = webdriver.By.css("[data-qa=change_city]");
   this.search_field = webdriver.By.css("[data-qa=search-input]");
   this.search_button = webdriver.By.css("[data-qa=search-submit]");
   
@@ -28,7 +28,7 @@ module.exports = function(driver, baseURL) {
     };
 
   this.goToLoginPage = function() {
-        driver.findElement(this.login_button).click();
+        driver.findElement(this.myolx).click();
     };
 
   this.logOut = function(){
@@ -37,54 +37,43 @@ module.exports = function(driver, baseURL) {
     };
 
   this.isUserLoggedOut = function(){
-      var login_button = this.login_button
-      driver.wait(function() {
-      return driver.findElement(login_button).then(function(res) {
-        return driver.findElement(login_button);
-      });
-    }, config.timeout);
+      var myolx = this.myolx;
+      var user_logged_out = webdriver.By.css("[href*='/login']");
+
+      driver.isElementPresent(webdriver.By.css("[href*='/login']")).then(function(element){
+        return element;
+    });
    };
 
   this.isUserLoggedIn = function(username, password) {
-      var myolx = this.myolx
-      driver.wait(function() {
-      return driver.findElement(myolx).then(function(res) {
-        return driver.findElement(myolx);
+      var myolx = this.myolx;
+      var user_logged_out = webdriver.By.css("[href*='/login']");
+      
+      driver.isElementPresent(webdriver.By.css("[href*='/login']")).then(function(element){
+        return !element;
       });
-    }, config.timeout);
    };
 
   this.goToChangeCity = function(){
      driver.findElement(this.change_city_link).click();     
   };
 
+  this.goToSelectCity = function(){
+     driver.findElement(this.select_city_link).click();     
+  };
+
   this.isUserLocatedInCity = function() {
+    var change_city = this.change_city_link;
     driver.wait(function() {
-      return driver.getPageSource().then(function(res) {
-        return expect(res).to.contain("location?location=");
+       return driver.findElement(change_city).then(function(res) {
+        return driver.findElement(change_city);
         });
-    }, config.timeout);
+    });
   };
 
   this.globalSearch = function(term){
     driver.findElement(this.search_field).clear();
     driver.findElement(this.search_field).sendKeys(term);
     driver.findElement(this.search_button).click();
-  };
-}
-
-
-//LISTING
-function ListingPage(){
-  this.item_listing = "li:nth-child(1) > [data-qa=list-item]";
-  this.openItem = function (number){
-    if(!number){
-      driver.findElement(webdriver.By.css(this.item_listing)).click();
-    }
-      else {
-        var locator = this.item_listing;
-        var new_locator = locator.replace("1", number);
-        driver.findElement(webdriver.By.css(new_locator)).click();  
-    }
   };
 }
