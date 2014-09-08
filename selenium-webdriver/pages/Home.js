@@ -5,7 +5,7 @@ var expect = chai.expect;
 var webdriver = require('../node_modules/selenium-webdriver');
 var config = require('../config');
 
-module.exports = function(driver, baseURL) {
+module.exports = function(driver, baseURL, platform) {
   this.post_button = webdriver.By.css("[data-qa=post_button]");
   this.myolx = webdriver.By.css("[data-qa=my_olx]"); // -> Missing
   this.logout_button = webdriver.By.css("[data-qa=logout_link]");
@@ -17,7 +17,7 @@ module.exports = function(driver, baseURL) {
   this.go = function() {
         driver.manage().deleteAllCookies();
         driver.get(baseURL + '/?location=www.olx.com.py');
-        driver.manage().addCookie('forcedPlatform', 'html4');
+        driver.manage().addCookie('forcedPlatform', platform);
         driver.navigate().refresh(); 
         driver.manage().window().setSize(2280, 2024);
     };

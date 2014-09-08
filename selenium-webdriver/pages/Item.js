@@ -5,7 +5,7 @@ var expect = chai.expect;
 var webdriver = require('../node_modules/selenium-webdriver');
 var config = require('../config');
 
-module.exports = function(driver, baseURL) {
+module.exports = function(driver, baseURL, platform) {
   this.favorite_on = webdriver.By.css("[class*='favoriteOn']"); // missing
   this.favorite_off = webdriver.By.css("[class*='favoriteOff']"); // missing
 

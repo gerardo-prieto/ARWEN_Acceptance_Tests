@@ -5,7 +5,7 @@ var expect = chai.expect;
 var webdriver = require('../node_modules/selenium-webdriver');
 var config = require('../config');
 
-module.exports = function(driver, baseURL) {
+module.exports = function(driver, baseURL, platform) {
     this.adLink = webdriver.By.css("[data-qa=posted_ad_link]");
 
   this.openAdLink = function() {

@@ -5,7 +5,7 @@ var expect = chai.expect;
 var webdriver = require('../node_modules/selenium-webdriver');
 var config = require('../config');
 
-module.exports = function(driver, baseURL) {
+module.exports = function(driver, baseURL, platform) {
   this.item_listing = "li:nth-child(1) > [data-qa=list-item]";
   this.openItem = function (number){
     if(!number){

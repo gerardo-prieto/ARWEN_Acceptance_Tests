@@ -5,14 +5,14 @@ var expect = chai.expect;
 var webdriver = require('../node_modules/selenium-webdriver');
 var config = require('../config');
 
-module.exports = function(driver, baseURL) {
+module.exports = function(driver, baseURL, platform) {
   this.message_field = webdriver.By.name("message");
   this.name_field = webdriver.By.name("name");
   this.email_field = webdriver.By.name("email");
   this.phone_field = webdriver.By.name("phone");
   this.reply_button = webdriver.By.css("[data-qa=reply-button]");
-  this.reply_send_button = webdriver.By.css("data-qa=reply-send-button");
-  this.confirmation_id = webdriver.By.css("[class=items_success_view]");
+  this.reply_send_button = webdriver.By.css("[data-qa=reply-send-button]");
+  this.confirmation_id = webdriver.By.css("[data-qa=reply-message-sent]");
 
   this.replyAnAdWith = function(message, name, email, phone){
     var reply_button = this.reply_button;

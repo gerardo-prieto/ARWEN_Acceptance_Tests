@@ -5,7 +5,7 @@ var expect = chai.expect;
 var webdriver = require('../node_modules/selenium-webdriver');
 var config = require('../config');
 
-module.exports = function(driver, baseURL) {
+module.exports = function(driver, baseURL, platform) {
   this.city = webdriver.By.css("[data-qa=city_name]:first-child");
   this.category = "[data-qa=category_name][href*='posting/186']";
   this.subcategory = "[data-qa=subcategory_name][href*='posting/186/279']";   
