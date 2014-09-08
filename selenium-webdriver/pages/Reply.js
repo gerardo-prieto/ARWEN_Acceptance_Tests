@@ -10,8 +10,8 @@ module.exports = function(driver, baseURL) {
   this.name_field = webdriver.By.name("name");
   this.email_field = webdriver.By.name("email");
   this.phone_field = webdriver.By.name("phone");
-  this.reply_button = webdriver.By.css("[href*='/reply']");
-  this.send_button = webdriver.By.name("submit");
+  this.reply_button = webdriver.By.css("[data-qa=reply-button]");
+  this.reply_send_button = webdriver.By.css("data-qa=reply-send-button");
   this.confirmation_id = webdriver.By.css("[class=items_success_view]");
 
   this.replyAnAdWith = function(message, name, email, phone){
@@ -24,7 +24,7 @@ module.exports = function(driver, baseURL) {
     driver.findElement(this.email_field).sendKeys(email);
     driver.findElement(this.phone_field).clear();
     driver.findElement(this.phone_field).sendKeys(phone);
-    driver.findElement(this.send_button).click();
+    driver.findElement(this.reply_send_button).click();
   };
 
   this.isConfirmationMessageDisplayed = function(){
