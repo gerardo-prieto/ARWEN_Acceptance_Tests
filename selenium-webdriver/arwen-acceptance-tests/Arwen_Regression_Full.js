@@ -33,7 +33,7 @@ test.describe('ARWEN Test Suite', function() {
     withCapabilities(config.capabilities[platform]). 
     build();
     driver.manage().timeouts().implicitlyWait(config.timeout, 1000);
-    pages = require('../pages')(driver, baseURL, argv.platform);
+    pages = require('../pages')(driver, baseURL, platform);
   });
 
 /*
@@ -129,17 +129,17 @@ test.it('SEARCH - Search logged in', function() {
     pages.Listing.openItem();
     pages.Item.isItemDisplayed();
   });
+*/
 
-
-test.it('SEARCH - Search anonymous', function() {
+test.it('SEARCH - Search and open an Ad', function() {
     pages.Home.go();
     pages.Home.globalSearch("a");
     pages.Listing.openItem();
     pages.Item.isItemDisplayed();
   });
 
-*/
 
+/*
 test.it('ITEM PAGE - Reply an Ad - Anonymous', function() {
     pages.Home.go();
     pages.Home.globalSearch("a");
@@ -159,7 +159,7 @@ test.it('ITEM PAGE - Reply an Ad - Logged in', function() {
     pages.Reply.isConfirmationMessageDisplayed();
   });
 
-/*
+
 
 test.it('ITEM PAGE - Add and Remove to Favorites', function() {
     pages.Home.go();
