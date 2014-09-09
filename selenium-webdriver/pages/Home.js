@@ -6,11 +6,11 @@ var webdriver = require('../node_modules/selenium-webdriver');
 var config = require('../config');
 
 module.exports = function(driver, baseURL, platform) {
-  this.post_button = webdriver.By.css("[data-qa=post_button]");
-  this.myolx = webdriver.By.css("[data-qa=my_olx]"); // -> Missing
-  this.logout_button = webdriver.By.css("[data-qa=logout_link]");
-  this.select_city_link = webdriver.By.css("[data-qa=select_city]");
-  this.change_city_link = webdriver.By.css("[data-qa=change_city]");
+  this.post_button = webdriver.By.css("[data-qa=post-button]");
+  this.myolx = webdriver.By.css("[data-qa=my-olx]"); // -> Missing
+  this.logout_button = webdriver.By.css("[data-qa=logout-link]");
+  this.select_city_link = webdriver.By.css("[data-qa=select-city]");
+  this.change_city_link = webdriver.By.css("[data-qa=change-city]");
   this.search_field = webdriver.By.css("[data-qa=search-input]");
   this.search_button = webdriver.By.css("[data-qa=search-submit]");
   

@@ -6,7 +6,7 @@ var webdriver = require('../node_modules/selenium-webdriver');
 var config = require('../config');
 
 module.exports = function(driver, baseURL, platform) {
-    this.adLink = webdriver.By.css("[data-qa=posted_ad_link]");
+    this.adLink = webdriver.By.css("[data-qa=posted-ad-link]");
 
   this.openAdLink = function() {
       driver.findElement(this.adLink).click();

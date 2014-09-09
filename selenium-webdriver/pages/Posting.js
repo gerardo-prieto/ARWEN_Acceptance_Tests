@@ -6,16 +6,16 @@ var webdriver = require('../node_modules/selenium-webdriver');
 var config = require('../config');
 
 module.exports = function(driver, baseURL, platform) {
-  this.city = webdriver.By.css("[data-qa=city_name]:first-child");
-  this.category = "[data-qa=category_name][href*='posting/186']";
-  this.subcategory = "[data-qa=subcategory_name][href*='posting/186/279']";   
+  this.city = webdriver.By.css("[data-qa=city-name]:first-child");
+  this.category = "[data-qa=category-name][href*='posting/186']";
+  this.subcategory = "[data-qa=subcategory-name][href*='posting/186/279']";   
   this.title = webdriver.By.css("[id=text-title]");
   this.description = webdriver.By.css("[id=text-description]");
   this.price = webdriver.By.css("[id=text-priceC]");
   this.contactName = webdriver.By.css("[id=text-contactName]");
   this.phone = webdriver.By.css("[id=text-phone]");
   this.email = webdriver.By.css("[id=text-email]");
-  this.submitButton = webdriver.By.css("[data-qa=submit_button]");
+  this.submitButton = webdriver.By.css("[data-qa=submit-button]");
  
 
 
