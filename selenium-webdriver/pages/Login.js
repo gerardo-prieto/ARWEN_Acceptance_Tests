@@ -9,6 +9,7 @@ module.exports = function(driver, baseURL, platform) {
   this.username_field = webdriver.By.css("[data-qa=username-field]");
   this.password_field = webdriver.By.css("[data-qa=password-field]");
   this.submit_button = webdriver.By.css("[data-qa=login-button]");
+ 
   this.logInWith = function(username, password) {
     driver.findElement(this.username_field).clear();
     driver.findElement(this.username_field).sendKeys(username);

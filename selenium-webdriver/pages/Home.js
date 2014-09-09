@@ -39,20 +39,24 @@ module.exports = function(driver, baseURL, platform) {
   this.isUserLoggedOut = function(){
       var myolx = this.myolx;
       var user_logged_out = webdriver.By.css("[href*='/login']");
+      driver.manage().timeouts().implicitlyWait(0, 1000);
       driver.isElementPresent(user_logged_out)
           .then(function assert(isPresent) {
             expect(isPresent).to.equal(true);
       });
+      driver.manage().timeouts().implicitlyWait(config.timeout, 1000);    
   };
 
 
   this.isUserLoggedIn = function(username, password) {
       var myolx = this.myolx;
       var user_logged_out = webdriver.By.css("[href*='/login']");
+      driver.manage().timeouts().implicitlyWait(0, 1000);
       driver.isElementPresent(user_logged_out)
           .then(function assert(isPresent) {
             expect(isPresent).to.equal(false);
       });
+      driver.manage().timeouts().implicitlyWait(config.timeout, 1000);    
   };
 
   this.goToChangeCity = function(){
@@ -65,10 +69,12 @@ module.exports = function(driver, baseURL, platform) {
 
   this.isUserLocatedInCity = function() {
     var change_city = this.change_city_link;
+    driver.manage().timeouts().implicitlyWait(0, 1000); 
     driver.isElementPresent(change_city)
       .then(function assert(isPresent) {
         expect(isPresent).to.equal(true);
     });
+    driver.manage().timeouts().implicitlyWait(config.timeout, 1000); 
   };
 
   this.globalSearch = function(term){

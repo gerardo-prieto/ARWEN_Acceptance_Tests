@@ -6,37 +6,42 @@ var webdriver = require('../node_modules/selenium-webdriver');
 var config = require('../config');
 
 module.exports = function(driver, baseURL, platform) {
-  this.favorite_on = webdriver.By.css("[class*='favoriteOn']"); // missing
-  this.favorite_off = webdriver.By.css("[class*='favoriteOff']"); // missing
+  this.remove_favorite = webdriver.By.css("[data-qa=remove-favorite]"); 
+  this.add_favorite = webdriver.By.css("[data-qa=add-favorite]");
 
   this.addItemToFavorites = function(){
-    var favorite_on = this.favorite_on;
-    var favorite_off = this.favorite_off;
-
-    driver.isElementPresent(favorite_on)
+    var remove_favorite = this.remove_favorite;
+    var add_favorite = this.add_favorite;
+    driver.manage().timeouts().implicitlyWait(0, 1000); 
+    driver.isElementPresent(remove_favorite)
       .then(function check(isPresent) {
         if (isPresent){
-          driver.findElement(favorite_on).click();
+          driver.findElement(remove_favorite).click();
         }
       })
       .then(function click() {
-        driver.findElement(favorite_off).click();
+        driver.manage().timeouts().implicitlyWait(config.timeout, 1000);  
+        driver.findElement(add_favorite).click();
+        driver.manage().timeouts().implicitlyWait(0, 1000);  
       })
       .then(function check() {
-        driver.isElementPresent(favorite_on)
+        driver.isElementPresent(remove_favorite)
           .then(function assert(isPresent) {
             expect(isPresent).to.equal(true);
           });
       });
+    driver.manage().timeouts().implicitlyWait(config.timeout, 1000);   
   };
 
 
 
   this.isItemDisplayed = function(){
       var item_page_element = webdriver.By.css("[data-qa=item]");
+      driver.manage().timeouts().implicitlyWait(0, 1000); 
       driver.isElementPresent(item_page_element)
           .then(function assert(isPresent) {
             expect(isPresent).to.equal(true);
+      driver.manage().timeouts().implicitlyWait(config.timeout, 1000);             
       });
   };       
 }

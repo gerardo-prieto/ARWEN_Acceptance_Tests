@@ -7,7 +7,8 @@ var config = require('../config');
 
 module.exports = function(driver, baseURL, platform) {
   this.item_listing = "li:nth-child(1) > [data-qa=list-item]";
-  this.openItem = function (number){
+ 
+ this.openItem = function (number){
     if(!number){
       driver.findElement(webdriver.By.css(this.item_listing)).click();
     }

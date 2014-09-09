@@ -12,7 +12,7 @@ module.exports = function(driver, baseURL, platform) {
   this.phone_field = webdriver.By.name("phone");
   this.reply_button = webdriver.By.css("[data-qa=reply-button]");
   this.reply_send_button = webdriver.By.css("[data-qa=reply-send-button]");
-  this.confirmation_id = webdriver.By.css("[data-qa=reply-message-sent]");
+  this.confirmation_message = webdriver.By.css("[data-qa=reply-message-sent]");
 
   this.replyAnAdWith = function(message, name, email, phone){
     var reply_button = this.reply_button;
@@ -28,11 +28,12 @@ module.exports = function(driver, baseURL, platform) {
   };
 
   this.isConfirmationMessageDisplayed = function(){
-    var confirmation_id = this.confirmation_id;
-    driver.wait(function() {
-      return driver.getPageSource().then(function(res) {
-        return driver.findElement(confirmation_id);
-      });
-    }, config.timeout);
+    var confirmation_message = this.confirmation_message;
+    driver.manage().timeouts().implicitlyWait(0, 1000); 
+    driver.isElementPresent(confirmation_message)
+     .then(function assert(isPresent) {
+       expect(isPresent).to.equal(true);
+    });
+    driver.manage().timeouts().implicitlyWait(config.timeout, 1000); 
   };
 }

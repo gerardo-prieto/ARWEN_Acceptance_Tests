@@ -14,9 +14,11 @@ module.exports = function(driver, baseURL, platform) {
 
   this.isItemDisplayed = function(){
       var item_page_element = webdriver.By.css("[data-qa=item]");
+      driver.manage().timeouts().implicitlyWait(0, 1000); 
       driver.isElementPresent(item_page_element)
           .then(function assert(isPresent) {
             expect(isPresent).to.equal(true);
           });
+      driver.manage().timeouts().implicitlyWait(config.timeout, 1000); 
     };
 }
