@@ -36,7 +36,7 @@ test.describe('ARWEN Test Suite', function() {
     pages = require('../pages')(driver, baseURL, platform);
   });
 
-/*
+
 
   test.it('POST - Anonymous - No price', function() {
     pages.Home.go();
@@ -129,7 +129,7 @@ test.it('SEARCH - Search logged in', function() {
     pages.Listing.openItem();
     pages.Item.isItemDisplayed();
   });
-*/
+
 
 test.it('SEARCH - Search and open an Ad', function() {
     pages.Home.go();
@@ -139,7 +139,7 @@ test.it('SEARCH - Search and open an Ad', function() {
   });
 
 
-/*
+
 test.it('ITEM PAGE - Reply an Ad - Anonymous', function() {
     pages.Home.go();
     pages.Home.globalSearch("a");
@@ -169,7 +169,7 @@ test.it('ITEM PAGE - Add and Remove to Favorites', function() {
     pages.Listing.openItem(1);
     pages.Item.addItemToFavorites();
   });
-*/
+
 
 
   test.after(function() { driver.quit(); });
