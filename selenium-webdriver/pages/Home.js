@@ -18,6 +18,7 @@ module.exports = function(driver, baseURL, platform) {
         driver.manage().deleteAllCookies();
         driver.get(baseURL + '/?location=www.olx.com.py');
         driver.manage().addCookie('forcedPlatform', platform);
+        driver.manage().addCookie('showInterstitial', '1');
         driver.navigate().refresh(); 
         driver.manage().window().setSize(2280, 2024);
     };
