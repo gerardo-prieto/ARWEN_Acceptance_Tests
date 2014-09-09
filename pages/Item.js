@@ -6,8 +6,14 @@ var webdriver = require('../node_modules/selenium-webdriver');
 var config = require('../config');
 
 module.exports = function(driver, baseURL, platform) {
-  this.remove_favorite = webdriver.By.css("[data-qa=remove-favorite]"); 
-  this.add_favorite = webdriver.By.css("[data-qa=add-favorite]");
+  if(platform == 'html4'){
+    this.remove_favorite = webdriver.By.css("[data-qa=remove-favorite]"); 
+    this.add_favorite = webdriver.By.css("[data-qa=add-favorite]");
+  }
+    else{
+      this.remove_favorite = webdriver.By.css("[class*='fav'][class*='remove']"); 
+      this.add_favorite = webdriver.By.css("[class*='fav'][class*='add']");
+    }
 
   this.addItemToFavorites = function(){
     var remove_favorite = this.remove_favorite;

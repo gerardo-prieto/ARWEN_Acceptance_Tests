@@ -6,7 +6,12 @@ var webdriver = require('../node_modules/selenium-webdriver');
 var config = require('../config');
 
 module.exports = function(driver, baseURL, platform) {
-  this.item_listing = "li:nth-child(1) > [data-qa=list-item]";
+  if(platform != 'wap'){
+    this.item_listing = "li:nth-child(1) > [data-qa=list-item]";
+  }
+    else{
+      this.item_listing = "tr:nth-child(2) > * > [data-qa=list-item]";
+    }
  
  this.openItem = function (number){
     if(!number){
@@ -14,7 +19,12 @@ module.exports = function(driver, baseURL, platform) {
     }
       else {
         var locator = this.item_listing;
-        var new_locator = locator.replace("1", number);
+        if (platform != 'wap'){
+          var new_locator = locator.replace("1", number);
+        }
+          else{
+            var new_locator = locator.replace("2", number+1);
+         }
         driver.findElement(webdriver.By.css(new_locator)).click();  
     }
   };

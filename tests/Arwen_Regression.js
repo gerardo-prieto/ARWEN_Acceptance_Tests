@@ -38,7 +38,7 @@ test.describe('ARWEN Test Suite', function() {
 
 
 
-  test.it('POST - Anonymous - No price', function() {
+  test.it('POST - Anonymous - No price - @wap @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToPostingPage();
     pages.Posting.selectCityCategoryAndSubcategory();
@@ -48,7 +48,7 @@ test.describe('ARWEN Test Suite', function() {
   });
 
 
-  test.it('POST - Anonymous - With price', function() {
+  test.it('POST - Anonymous - With price - @wap @html4 @html5 ', function() {
     pages.Home.go();
     pages.Home.goToPostingPage();
     pages.Posting.selectCityCategoryAndSubcategory(362,378);
@@ -59,7 +59,7 @@ test.describe('ARWEN Test Suite', function() {
 
 
 
-  test.it('POST - Logged In - No price', function() {
+  test.it('POST - Logged In - No price - @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
     pages.Login.logInWith('robot_test@olx.com', 'robotium2014');
@@ -71,7 +71,7 @@ test.describe('ARWEN Test Suite', function() {
   });
 
 
-  test.it('POST - Logged In - With price', function() {
+  test.it('POST - Logged In - With price - @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
     pages.Login.logInWith('robot_test@olx.com', 'robotium2014');
@@ -83,7 +83,7 @@ test.describe('ARWEN Test Suite', function() {
   });
 
 
-  test.it('LOGIN with valid user', function() {
+  test.it('LOGIN with valid user - @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
     pages.Login.logInWith('robot_test@olx.com', 'robotium2014');
@@ -91,7 +91,7 @@ test.describe('ARWEN Test Suite', function() {
   });
 
 
-test.it('LOGOUT - Logout with valid user', function() {
+test.it('LOGOUT - Logout with valid user - @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
     pages.Login.logInWith('robot_test@olx.com', 'robotium2014');
@@ -101,7 +101,7 @@ test.it('LOGOUT - Logout with valid user', function() {
   });
 
 
-test.it('LOCATION - Select city', function() {
+test.it('LOCATION - Select city - @wap @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToSelectCity();
     pages.Location.selectCity(1);
@@ -109,7 +109,7 @@ test.it('LOCATION - Select city', function() {
   });
 
 
-test.it('LOCATION - Change city', function() {
+test.it('LOCATION - Change city - @wap @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToSelectCity();
     pages.Location.selectCity(1);
@@ -121,7 +121,7 @@ test.it('LOCATION - Change city', function() {
   });
 
 
-test.it('SEARCH - Search logged in', function() {
+test.it('SEARCH - Search logged in - @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
     pages.Login.logInWith('robot_test@olx.com', 'robotium2014');
@@ -131,7 +131,7 @@ test.it('SEARCH - Search logged in', function() {
   });
 
 
-test.it('SEARCH - Search and open an Ad', function() {
+test.it('SEARCH - Search and open an Ad - @wap @html4 @html5', function() {
     pages.Home.go();
     pages.Home.globalSearch("a");
     pages.Listing.openItem();
@@ -140,7 +140,7 @@ test.it('SEARCH - Search and open an Ad', function() {
 
 
 
-test.it('ITEM PAGE - Reply an Ad - Anonymous', function() {
+test.it('ITEM PAGE - Reply an Ad - Anonymous - @wap @html4 @html5', function() {
     pages.Home.go();
     pages.Home.globalSearch("a");
     pages.Listing.openItem(1);
@@ -149,7 +149,7 @@ test.it('ITEM PAGE - Reply an Ad - Anonymous', function() {
   });
 
 
-test.it('ITEM PAGE - Reply an Ad - Logged in', function() {
+test.it('ITEM PAGE - Reply an Ad - Logged in - @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
     pages.Login.logInWith('robot_test@olx.com', 'robotium2014');
@@ -161,7 +161,7 @@ test.it('ITEM PAGE - Reply an Ad - Logged in', function() {
 
 
 
-test.it('ITEM PAGE - Add and Remove to Favorites', function() {
+test.it('ITEM PAGE - Add and Remove to Favorites - @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
     pages.Login.logInWith('robot_test@olx.com', 'robotium2014');
