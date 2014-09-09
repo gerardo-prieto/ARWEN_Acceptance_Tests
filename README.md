@@ -1,4 +1,4 @@
-ARWEN_Acceptance_Tests
-======================
+arwen-selenium-mocha
+====================
 
-ARWEN_Acceptance_Tests
+Arwen automated acceptance tests with WebDriver &amp; Mocha
