@@ -5,19 +5,20 @@ var expect = chai.expect;
 var webdriver = require('../node_modules/selenium-webdriver');
 var config = require('../config');
 
-module.exports = function(driver, baseURL) {
-  this.post_button = webdriver.By.css("[class=post]");
-  this.login_button = webdriver.By.css("[href*='/login']");
-  this.myolx = webdriver.By.css("[href*='/myolx']");
-  this.logout_button = webdriver.By.css("[href*='/logout']");
-  this.change_city_link = webdriver.By.css("div[id=locationSelect] > a");
+module.exports = function(driver, baseURL, platform) {
+  this.post_button = webdriver.By.css("[data-qa=post-button]");
+  this.myolx = webdriver.By.css("[data-qa=my-olx]"); // -> Missing
+  this.logout_button = webdriver.By.css("[data-qa=logout-link]");
+  this.select_city_link = webdriver.By.css("[data-qa=select-city]");
+  this.change_city_link = webdriver.By.css("[data-qa=change-city]");
   this.search_field = webdriver.By.css("[data-qa=search-input]");
   this.search_button = webdriver.By.css("[data-qa=search-submit]");
   
   this.go = function() {
         driver.manage().deleteAllCookies();
         driver.get(baseURL + '/?location=www.olx.com.py');
-        driver.manage().addCookie('forcedPlatform', 'html4');
+        driver.manage().addCookie('forcedPlatform', platform);
+        driver.manage().addCookie('showInterstitial', '1');
         driver.navigate().refresh(); 
         driver.manage().window().setSize(2280, 2024);
     };
@@ -28,7 +29,7 @@ module.exports = function(driver, baseURL) {
     };
 
   this.goToLoginPage = function() {
-        driver.findElement(this.login_button).click();
+        driver.findElement(this.myolx).click();
     };
 
   this.logOut = function(){
@@ -37,54 +38,49 @@ module.exports = function(driver, baseURL) {
     };
 
   this.isUserLoggedOut = function(){
-      var login_button = this.login_button
-      driver.wait(function() {
-      return driver.findElement(login_button).then(function(res) {
-        return driver.findElement(login_button);
+      var myolx = this.myolx;
+      var user_logged_out = webdriver.By.css("[href*='/login']");
+      driver.manage().timeouts().implicitlyWait(0, 1000);
+      driver.isElementPresent(user_logged_out)
+          .then(function assert(isPresent) {
+            expect(isPresent).to.equal(true);
       });
-    }, config.timeout);
-   };
+      driver.manage().timeouts().implicitlyWait(config.timeout, 1000);    
+  };
+
 
   this.isUserLoggedIn = function(username, password) {
-      var myolx = this.myolx
-      driver.wait(function() {
-      return driver.findElement(myolx).then(function(res) {
-        return driver.findElement(myolx);
+      var myolx = this.myolx;
+      var user_logged_out = webdriver.By.css("[href*='/login']");
+      driver.manage().timeouts().implicitlyWait(0, 1000);
+      driver.isElementPresent(user_logged_out)
+          .then(function assert(isPresent) {
+            expect(isPresent).to.equal(false);
       });
-    }, config.timeout);
-   };
+      driver.manage().timeouts().implicitlyWait(config.timeout, 1000);    
+  };
 
   this.goToChangeCity = function(){
      driver.findElement(this.change_city_link).click();     
   };
 
+  this.goToSelectCity = function(){
+     driver.findElement(this.select_city_link).click();     
+  };
+
   this.isUserLocatedInCity = function() {
-    driver.wait(function() {
-      return driver.getPageSource().then(function(res) {
-        return expect(res).to.contain("location?location=");
-        });
-    }, config.timeout);
+    var change_city = this.change_city_link;
+    driver.manage().timeouts().implicitlyWait(0, 1000); 
+    driver.isElementPresent(change_city)
+      .then(function assert(isPresent) {
+        expect(isPresent).to.equal(true);
+    });
+    driver.manage().timeouts().implicitlyWait(config.timeout, 1000); 
   };
 
   this.globalSearch = function(term){
     driver.findElement(this.search_field).clear();
     driver.findElement(this.search_field).sendKeys(term);
     driver.findElement(this.search_button).click();
-  };
-}
-
-
-//LISTING
-function ListingPage(){
-  this.item_listing = "li:nth-child(1) > [data-qa=list-item]";
-  this.openItem = function (number){
-    if(!number){
-      driver.findElement(webdriver.By.css(this.item_listing)).click();
-    }
-      else {
-        var locator = this.item_listing;
-        var new_locator = locator.replace("1", number);
-        driver.findElement(webdriver.By.css(new_locator)).click();  
-    }
   };
 }

@@ -5,8 +5,9 @@ var expect = chai.expect;
 var webdriver = require('../node_modules/selenium-webdriver');
 var config = require('../config');
 
-module.exports = function(driver, baseURL) {
-   this.city_link = "[class=normalList] > li:nth-child(1) > a";
+module.exports = function(driver, baseURL, platform) {
+   this.city_link = "li:nth-child(1) > [data-qa=city-name]";
+ 
    this.selectCity = function(number) {
    if(!number){
       driver.findElement(webdriver.By.css(this.city_link)).click();

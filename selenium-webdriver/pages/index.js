@@ -3,7 +3,7 @@
 var fs = require('fs');
 var path = require('path');
 
-module.exports = function(driver, baseURL) {
+module.exports = function(driver, baseURL, platform) {
     var pages = {};
 
     fs.readdirSync(__dirname).forEach(function each(filename) {
@@ -14,7 +14,7 @@ module.exports = function(driver, baseURL) {
             return;
         }
         Page = require('./' + name);
-        pages[name] = new Page(driver, baseURL);
+        pages[name] = new Page(driver, baseURL, platform);
     });
     return pages;
 };

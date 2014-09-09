@@ -33,7 +33,7 @@ test.describe('ARWEN Test Suite', function() {
     withCapabilities(config.capabilities[platform]). 
     build();
     driver.manage().timeouts().implicitlyWait(config.timeout, 1000);
-    pages = require('../pages')(driver, baseURL);
+    pages = require('../pages')(driver, baseURL, platform);
   });
 
 
@@ -56,6 +56,7 @@ test.describe('ARWEN Test Suite', function() {
     pages.AfterPosting.openAdLink();
     pages.AfterPosting.isItemDisplayed("Title for testing");
   });
+
 
 
   test.it('POST - Logged In - No price', function() {
@@ -102,16 +103,15 @@ test.it('LOGOUT - Logout with valid user', function() {
 
 test.it('LOCATION - Select city', function() {
     pages.Home.go();
-    pages.Home.goToChangeCity();
+    pages.Home.goToSelectCity();
     pages.Location.selectCity(1);
     pages.Home.isUserLocatedInCity();
   });
 
 
-
 test.it('LOCATION - Change city', function() {
     pages.Home.go();
-    pages.Home.goToChangeCity();
+    pages.Home.goToSelectCity();
     pages.Location.selectCity(1);
     pages.Home.isUserLocatedInCity();
     pages.Home.goToChangeCity();
@@ -131,7 +131,7 @@ test.it('SEARCH - Search logged in', function() {
   });
 
 
-test.it('SEARCH - Search anonymous', function() {
+test.it('SEARCH - Search and open an Ad', function() {
     pages.Home.go();
     pages.Home.globalSearch("a");
     pages.Listing.openItem();
@@ -160,6 +160,7 @@ test.it('ITEM PAGE - Reply an Ad - Logged in', function() {
   });
 
 
+
 test.it('ITEM PAGE - Add and Remove to Favorites', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
@@ -168,6 +169,8 @@ test.it('ITEM PAGE - Add and Remove to Favorites', function() {
     pages.Listing.openItem(1);
     pages.Item.addItemToFavorites();
   });
+
+
 
   test.after(function() { driver.quit(); });
 });
