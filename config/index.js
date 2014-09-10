@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-    timeout: 40000,
+    timeout: 70000,
     capabilities: {
         wap: {
             'browserName' : 'firefox' ,
