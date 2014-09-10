@@ -43,7 +43,7 @@ test.describe('ARWEN Test Suite', function() {
     pages.Home.go();
     pages.Home.goToPostingPage();
     pages.Posting.selectCityCategoryAndSubcategory();
-    pages.Posting.postWith("Title for testing", "Description for testing", "" , "Mark tester", "1231231231", "robot_test@olx.com");
+    pages.Posting.postWith("Title for testing", "Description for testing", "" , "Mark tester", "1231231231", "robotest@olx.com");
     pages.AfterPosting.openAdLink();
     pages.AfterPosting.isItemDisplayed("Title for testing");
   });
@@ -53,7 +53,7 @@ test.describe('ARWEN Test Suite', function() {
     pages.Home.go();
     pages.Home.goToPostingPage();
     pages.Posting.selectCityCategoryAndSubcategory(362,378);
-    pages.Posting.postWith("Title for testing","Description for testing", "2000" , "Mark tester", "1231231231", "robot_test@olx.com");
+    pages.Posting.postWith("Title for testing","Description for testing", "2000" , "Mark tester", "1231231231", "robotest@olx.com");
     pages.AfterPosting.openAdLink();
     pages.AfterPosting.isItemDisplayed("Title for testing");
   });
@@ -63,10 +63,10 @@ test.describe('ARWEN Test Suite', function() {
   test.it('POST - Logged In - No price - @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
-    pages.Login.logInWith('robot_test@olx.com', 'robotium2014');
+    pages.Login.logInWith('robotest@olx.com', 'robotpass');
     pages.Home.goToPostingPage();
     pages.Posting.selectCityCategoryAndSubcategory();
-    pages.Posting.postWith("Title for testing","Description for testing", "" , "Mark tester", "1231231231", "robot_test@olx.com");
+    pages.Posting.postWith("Title for testing","Description for testing", "" , "Mark tester", "1231231231", "robotest@olx.com");
     pages.AfterPosting.openAdLink();
     pages.AfterPosting.isItemDisplayed("Title for testing");
   });
@@ -75,10 +75,10 @@ test.describe('ARWEN Test Suite', function() {
   test.it('POST - Logged In - With price - @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
-    pages.Login.logInWith('robot_test@olx.com', 'robotium2014');
+    pages.Login.logInWith('robotest@olx.com', 'robotpass');
     pages.Home.goToPostingPage();
     pages.Posting.selectCityCategoryAndSubcategory(362,378);
-    pages.Posting.postWith("Title for testing","Description for testing", "2000" , "Mark tester", "1231231231", "robot_test@olx.com");
+    pages.Posting.postWith("Title for testing","Description for testing", "2000" , "Mark tester", "1231231231", "robotest@olx.com");
     pages.AfterPosting.openAdLink();
     pages.AfterPosting.isItemDisplayed("Title for testing");
   });
@@ -88,7 +88,7 @@ test.describe('ARWEN Test Suite', function() {
   test.it('LOGIN with valid user - @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
-    pages.Login.logInWith('robot_test@olx.com', 'robotium2014');
+    pages.Login.logInWith('robotest@olx.com', 'robotpass');
     pages.Home.isUserLoggedIn();
   });
 
@@ -96,7 +96,7 @@ test.describe('ARWEN Test Suite', function() {
 test.it('LOGOUT - Logout with valid user - @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
-    pages.Login.logInWith('robot_test@olx.com', 'robotium2014');
+    pages.Login.logInWith('robotest@olx.com', 'robotpass');
     pages.Home.logOut();
     pages.Home.isUserLoggedOut();
 
@@ -127,7 +127,7 @@ test.it('LOCATION - Change city - @wap @html4 @html5', function() {
 test.it('SEARCH - Search logged in - @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
-    pages.Login.logInWith('robot_test@olx.com', 'robotium2014');
+    pages.Login.logInWith('robotest@olx.com', 'robotpass');
     pages.Home.globalSearch("a");
     pages.Listing.openItem();
     pages.Item.isItemDisplayed();
@@ -148,7 +148,7 @@ test.it('ITEM PAGE - Reply an Ad - Anonymous - @wap @html4 @html5', function() {
     pages.Home.go();
     pages.Home.globalSearch("a");
     pages.Listing.openItem(1);
-    pages.Reply.replyAnAdWith('Reply message for testing', 'robot', 'robot_test@olx.com', '1231231231');
+    pages.Reply.replyAnAdWith('Reply message for testing', 'robot', 'robotest@olx.com', '1231231231');
     pages.Reply.isConfirmationMessageDisplayed();
   });
 
@@ -156,10 +156,10 @@ test.it('ITEM PAGE - Reply an Ad - Anonymous - @wap @html4 @html5', function() {
 test.it('ITEM PAGE - Reply an Ad - Logged in - @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
-    pages.Login.logInWith('robot_test@olx.com', 'robotium2014');
+    pages.Login.logInWith('robotest@olx.com', 'robotpass');
     pages.Home.globalSearch("a");
     pages.Listing.openItem(1);
-    pages.Reply.replyAnAdWith('Reply message for testing', 'robot', 'robot_test@olx.com', '1231231231');
+    pages.Reply.replyAnAdWith('Reply message for testing', 'robot', 'robotest@olx.com', '1231231231');
     pages.Reply.isConfirmationMessageDisplayed();
   });
 
@@ -168,7 +168,7 @@ test.it('ITEM PAGE - Reply an Ad - Logged in - @html4 @html5', function() {
 test.it('ITEM PAGE - Add and Remove to Favorites - @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
-    pages.Login.logInWith('robot_test@olx.com', 'robotium2014');
+    pages.Login.logInWith('robotest@olx.com', 'robotpass');
     pages.Home.globalSearch("a");
     pages.Listing.openItem(1);
     pages.Item.addItemToFavorites();

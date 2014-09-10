@@ -70,12 +70,10 @@ module.exports = function(driver, baseURL, platform) {
 
   this.isUserLocatedInCity = function() {
     var change_city = this.change_city_link;
-//    driver.manage().timeouts().implicitlyWait(0); 
     driver.isElementPresent(change_city)
       .then(function assert(isPresent) {
         expect(isPresent).to.equal(true);
     });
-//    driver.manage().timeouts().implicitlyWait(config.timeout); 
   };
 
   this.globalSearch = function(term){
