@@ -33,6 +33,7 @@ test.describe('ARWEN Test Suite', function() {
     withCapabilities(config.capabilities[platform]). 
     build();
     driver.manage().timeouts().implicitlyWait(config.timeout, 1000);
+    driver.manage().timeouts().setScriptTimeout(config.timeout, 1000);
     pages = require('../pages')(driver, baseURL, platform);
   });
 
