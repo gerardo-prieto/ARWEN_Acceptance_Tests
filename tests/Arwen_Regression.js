@@ -32,8 +32,8 @@ test.describe('ARWEN Test Suite', function() {
     usingServer(server.address()).
     withCapabilities(config.capabilities[platform]). 
     build();
-    driver.manage().timeouts().implicitlyWait(config.timeout, 1000);
-    driver.manage().timeouts().setScriptTimeout(config.timeout, 1000);
+    driver.manage().timeouts().implicitlyWait(config.timeout);
+    driver.manage().timeouts().setScriptTimeout(config.timeout);
     pages = require('../pages')(driver, baseURL, platform);
   });
 
@@ -43,7 +43,7 @@ test.describe('ARWEN Test Suite', function() {
     pages.Home.go();
     pages.Home.goToPostingPage();
     pages.Posting.selectCityCategoryAndSubcategory();
-    pages.Posting.postWith("Title for testing","Description for testing", "" , "Mark tester", "1231231231", "robot_test@olx.com");
+    pages.Posting.postWith("Title for testing", "Description for testing", "" , "Mark tester", "1231231231", "robot_test@olx.com");
     pages.AfterPosting.openAdLink();
     pages.AfterPosting.isItemDisplayed("Title for testing");
   });
@@ -84,6 +84,7 @@ test.describe('ARWEN Test Suite', function() {
   });
 
 
+
   test.it('LOGIN with valid user - @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
@@ -122,6 +123,7 @@ test.it('LOCATION - Change city - @wap @html4 @html5', function() {
   });
 
 
+
 test.it('SEARCH - Search logged in - @html4 @html5', function() {
     pages.Home.go();
     pages.Home.goToLoginPage();
@@ -138,6 +140,7 @@ test.it('SEARCH - Search and open an Ad - @wap @html4 @html5', function() {
     pages.Listing.openItem();
     pages.Item.isItemDisplayed();
   });
+
 
 
 

@@ -18,7 +18,7 @@ module.exports = function(driver, baseURL, platform) {
   this.addItemToFavorites = function(){
     var remove_favorite = this.remove_favorite;
     var add_favorite = this.add_favorite;
-    driver.manage().timeouts().implicitlyWait(0, 1000); 
+    driver.manage().timeouts().implicitlyWait(0); 
     driver.isElementPresent(remove_favorite)
       .then(function check(isPresent) {
         if (isPresent){
@@ -26,9 +26,9 @@ module.exports = function(driver, baseURL, platform) {
         }
       })
       .then(function click() {
-        driver.manage().timeouts().implicitlyWait(config.timeout, 1000);  
+        driver.manage().timeouts().implicitlyWait(config.timeout);  
         driver.findElement(add_favorite).click();
-        driver.manage().timeouts().implicitlyWait(0, 1000);  
+        driver.manage().timeouts().implicitlyWait(0);  
       })
       .then(function check() {
         driver.isElementPresent(remove_favorite)
@@ -36,18 +36,18 @@ module.exports = function(driver, baseURL, platform) {
             expect(isPresent).to.equal(true);
           });
       });
-    driver.manage().timeouts().implicitlyWait(config.timeout, 1000);   
+    driver.manage().timeouts().implicitlyWait(config.timeout);   
   };
 
 
 
   this.isItemDisplayed = function(){
       var item_page_element = webdriver.By.css("[data-qa=item]");
-      driver.manage().timeouts().implicitlyWait(0, 1000); 
+  //    driver.manage().timeouts().implicitlyWait(0); 
       driver.isElementPresent(item_page_element)
           .then(function assert(isPresent) {
             expect(isPresent).to.equal(true);
-      driver.manage().timeouts().implicitlyWait(config.timeout, 1000);             
+  //    driver.manage().timeouts().implicitlyWait(config.timeout);             
       });
   };       
 }

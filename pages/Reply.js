@@ -29,11 +29,11 @@ module.exports = function(driver, baseURL, platform) {
 
   this.isConfirmationMessageDisplayed = function(){
     var confirmation_message = this.confirmation_message;
-    driver.manage().timeouts().implicitlyWait(0, 1000); 
+ //   driver.manage().timeouts().implicitlyWait(0); 
     driver.isElementPresent(confirmation_message)
      .then(function assert(isPresent) {
        expect(isPresent).to.equal(true);
     });
-    driver.manage().timeouts().implicitlyWait(config.timeout, 1000); 
+ //   driver.manage().timeouts().implicitlyWait(config.timeout); 
   };
 }
