@@ -11,14 +11,14 @@ module.exports = function(driver, baseURL, platform) {
     this.add_favorite = webdriver.By.css("[data-qa=add-favorite]");
   }
     else{
-      this.remove_favorite = webdriver.By.css("[class*='fav'][class*='remove']"); 
-      this.add_favorite = webdriver.By.css("[class*='fav'][class*='add']");
+      this.remove_favorite = webdriver.By.css(".fav.remove"); 
+      this.add_favorite = webdriver.By.css(".fav.add");
     }
 
   this.addItemToFavorites = function(){
     var remove_favorite = this.remove_favorite;
     var add_favorite = this.add_favorite;
-    driver.manage().timeouts().implicitlyWait(0); 
+//    driver.manage().timeouts().implicitlyWait(0); 
     driver.isElementPresent(remove_favorite)
       .then(function check(isPresent) {
         if (isPresent){
@@ -26,9 +26,9 @@ module.exports = function(driver, baseURL, platform) {
         }
       })
       .then(function click() {
-        driver.manage().timeouts().implicitlyWait(config.timeout);  
+//        driver.manage().timeouts().implicitlyWait(config.timeout);  
         driver.findElement(add_favorite).click();
-        driver.manage().timeouts().implicitlyWait(0);  
+//        driver.manage().timeouts().implicitlyWait(0);  
       })
       .then(function check() {
         driver.isElementPresent(remove_favorite)
@@ -36,7 +36,7 @@ module.exports = function(driver, baseURL, platform) {
             expect(isPresent).to.equal(true);
           });
       });
-    driver.manage().timeouts().implicitlyWait(config.timeout);   
+//    driver.manage().timeouts().implicitlyWait(config.timeout);   
   };
 
 
