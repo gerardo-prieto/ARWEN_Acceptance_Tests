@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-    timeout: 70000,
+    timeout: 90000,
     capabilities: {
         wap: {
             'browserName' : 'phantomjs' ,
