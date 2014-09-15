@@ -26,6 +26,7 @@ var driver;
 
 test.describe('ARWEN Test Suite', function() {
   var pages;
+  this.timeout(99999999);
 
   test.before(function() {
     driver = new webdriver.Builder().
